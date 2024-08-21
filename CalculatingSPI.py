@@ -1,7 +1,7 @@
 #########################################################################################
 ## Calculate the Standardised Precipitation Index (SPI) for all grid points across the CONUS between 1915-2020.
 ## Bryony Louise
-## Last Edited: Tuesday August 20th 2024 
+## Last Edited: Wednesday August 21st 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -37,29 +37,33 @@ Region = "WC"
 
 region_lon = {"test":[277,277.2],
               "CONUS":[235,295], 
-              "WC":[235,241],
-              "MW_N":[241,255], 
-              "MW_S":[241,255],
-              "NGP":[255,265], 
-              "SGP":[255,265], 
-              "GL_N":[265,279],
-              "GL_S":[265,279],
-              "NE":[279,295],
-              "SE_W":[265,275], 
-              "SE_E":[275,286]}
+              "WC":[235,241], #west coast
+              "MW_N":[241,255], #mountain west north
+              "MW_C":[], #moutain west central
+              "MW_S":[241,255], #mountain west south
+              "NGP":[255,265], #northern great plains
+              "SGP":[255,265], #southern great plains
+              "NGL":[265,279], #northern great lakes
+              "SGL":[265,279], #southern great lakes
+              "NNE":[279,295], #northern north east
+              "SNE":[], #southern north east
+              "WSE":[265,275], #western south east
+              "ESE":[275,286] #eastern south east}
 
 region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
-              "WC":[30,50],
-              "MW_N":[40,50], 
-              "MW_S":[25,40],              
-              "NGP":[40,50],
-              "SGP":[25,40], 
-              "GL_N":[43,50], 
-              "GL_S":[36,43],
-              "NE":[36,50],
-              "SE_W":[25,36],
-              "SE_E":[25,36]}
+              "WC":[30,50], #west coast
+              "MW_N":[40,50], #mountain west north 
+              "MW_C":[], #moutain west central
+              "MW_S":[25,40], #moutain west south              
+              "NGP":[40,50], #northern great plains
+              "SGP":[25,40], #southern great plains
+              "NGL":[43,50], #northern great lakes
+              "SGL":[36,43], #southern great lakes
+              "NNE":[36,50], #northern north east
+              "SNE":[], #southern north east
+              "WSE":[25,36], #western south east 
+              "ESE":[25,36] #eastern south east}
 
 inputlon = region_lon[Region]
 inputlat = region_lat[Region]
