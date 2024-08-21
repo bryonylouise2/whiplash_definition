@@ -39,31 +39,31 @@ region_lon = {"test":[277,277.2],
               "CONUS":[235,295], 
               "WC":[235,241], #west coast
               "MW_N":[241,255], #mountain west north
-              "MW_C":[], #moutain west central
+              "MW_C":[241,255], #moutain west central
               "MW_S":[241,255], #mountain west south
               "NGP":[255,265], #northern great plains
               "SGP":[255,265], #southern great plains
               "NGL":[265,279], #northern great lakes
               "SGL":[265,279], #southern great lakes
               "NNE":[279,295], #northern north east
-              "SNE":[], #southern north east
+              "SNE":[279,295], #southern north east
               "WSE":[265,275], #western south east
-              "ESE":[275,286] #eastern south east}
+              "ESE":[275,286]} #eastern south east
 
 region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
               "WC":[30,50], #west coast
-              "MW_N":[40,50], #mountain west north 
-              "MW_C":[], #moutain west central
-              "MW_S":[25,40], #moutain west south              
+              "MW_N":[42,50], #mountain west north 
+              "MW_C":[33,42], #moutain west central
+              "MW_S":[25,33], #moutain west south              
               "NGP":[40,50], #northern great plains
               "SGP":[25,40], #southern great plains
               "NGL":[43,50], #northern great lakes
               "SGL":[36,43], #southern great lakes
-              "NNE":[36,50], #northern north east
-              "SNE":[], #southern north east
+              "NNE":[36,43], #northern north east
+              "SNE":[43,50], #southern north east
               "WSE":[25,36], #western south east 
-              "ESE":[25,36] #eastern south east}
+              "ESE":[25,36]} #eastern south east
 
 inputlon = region_lon[Region]
 inputlat = region_lat[Region]
