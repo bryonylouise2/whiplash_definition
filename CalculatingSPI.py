@@ -1,7 +1,7 @@
 #########################################################################################
 ## Calculate the Standardised Precipitation Index (SPI) for all grid points across the CONUS between 1915-2020.
 ## Bryony Louise
-## Last Edited: Wednesday August 21st 2024 
+## Last Edited: Wednesday October 9th 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -111,7 +111,7 @@ for i in tqdm(range(0, len(prec_2D.point))):
         #print(spi30_gamma)
 
 #reshape back into a 3D array (time, lat, lon)
-spi30_gamma_new = np.reshape(spi30_gamma, [m, o, p], order="F")
+spi30_gamma_new = np.reshape(spi30_gamma, [m, o, p])
 
 #########################################################################################
 #Convert the numpy array back to an xarray dataset
@@ -136,3 +136,33 @@ spi30_dataset = xr.Dataset({"spi_30day":spi30_xarray})
 #Save File out as a netCDF file
 #########################################################################################
 spi30_dataset.to_netcdf('/scratch/bpuxley/SPI30_%s.nc'%(Region))
+
+#########################################################################################
+#Calculate and Plot the Average SPI for the region - to check if it looks correct
+#########################################################################################
+#Calculate the average SPI over the time period at each grid point
+spi_sum = np.nansum(spi30_gamma_new, axis=0)
+spi_mean = spi_sum/m
+
+lon, lat = np.meshgrid(prec_obs.lon.values, prec_obs.lat.values)
+#########################################################################################
+#Plot the SPI data
+#########################################################################################
+fig = plt.figure(figsize = (6,7), dpi = 300, tight_layout =True)
+
+# Second subplot with reshaped spi
+ax1 = fig.add_subplot(111, projection=ccrs.PlateCarree()) #ccrs.LambertConformal())
+
+ax1.add_feature(cfeature.COASTLINE)
+ax1.add_feature(cfeature.BORDERS, linewidth=1)
+ax1.add_feature(cfeature.STATES, edgecolor='black')
+
+ax1.set_extent([-130, -60, 21, 50], crs=ccrs.PlateCarree())
+
+cs1 = plt.contourf(lon, lat, spi_mean, transform=ccrs.PlateCarree(), extend = "max", levels=np.arange(-0.1, 0.1, 0.01), cmap = 'BrBG')
+
+fig.colorbar(cs1, ax=ax1, orientation='horizontal', pad=0.05)
+
+plt.title('SPI Mean %s'%(Region))
+
+plt.savefig('/scratch/bpuxley/Plots/spi_%s'%(Region), bbox_inches = 'tight', pad_inches = 0.1)    
