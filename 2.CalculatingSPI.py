@@ -1,7 +1,7 @@
 #########################################################################################
 ## Calculate the Standardised Precipitation Index (SPI) for all grid points across the CONUS between 1915-2020.
 ## Bryony Louise
-## Last Edited: Wednesday October 9th 2024 
+## Last Edited: Tuesday October 15th 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -60,8 +60,8 @@ region_lat = {"test":[35.1,35.3],
               "SGP":[25,40], #southern great plains
               "NGL":[43,50], #northern great lakes
               "SGL":[36,43], #southern great lakes
-              "NNE":[36,43], #northern north east
-              "SNE":[43,50], #southern north east
+              "SNE":[36,43], #southern north east
+              "NNE":[43,50], #northern north east
               "WSE":[25,36], #western south east 
               "ESE":[25,36]} #eastern south east
 
