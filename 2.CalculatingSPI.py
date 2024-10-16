@@ -85,7 +85,7 @@ window = 30
 prec_rolling = prec_obs.rolling(time=window).sum()
 print('Calculated 30-day rolling sum')
 #########################################################################################
-#Calculate Climate Indices: SPI & SPEI
+#Calculate Climate Indices: SPI
 #########################################################################################
 #First regrid precipitation data to space,time (2D)
 prec_2D = prec_rolling.stack(point=('lat', 'lon'))
