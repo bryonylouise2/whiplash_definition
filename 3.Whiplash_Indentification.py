@@ -114,9 +114,27 @@ print('whiplash events identifited')
 #########################################################################################
 #Save out the binary file of grid points meeting whiplash criteria
 #########################################################################################
-functions.save('/scratch/bpuxley/binary_array_DP', binary_array_DP)
-functions.save('/scratch/bpuxley/binary_array_PD', binary_array_PD)
+#functions.save('/home/bpuxley/Definition_and_Climatology/binary_array_DP', binary_array_DP)
+#functions.save('/home/bpuxley/Definition_and_Climatology/binary_array_PD', binary_array_PD)
 
+time = pd.date_range(start='1915-01-01', end='2020-12-31', freq='D')
+lats = df_spi.lat
+lons = df_spi.lon
+attrs = df_spi.attrs
+
+dimensions=['time','lat','lon']
+coords = {
+			'time': time,
+			'lat': lats,
+			'lon': lons
+			}
+#attributes = {'sources': 'Livneh et al., 2013 & PRISM, 2004', 'references': 'http://www.esrl.noaa.gov/psd/data/gridded/data.livneh.html','}
+
+DP_xarray = xr.DataArray(binary_array_DP, coords, dims=dimensions, name='Drought to Pluvial')
+PD_xarray = xr.DataArray(binary_array_PD, coords, dims=dimensions, name='Pluvial to Drought')
+whiplash_dataset = xr.Dataset({"DP_whiplashes":DP_xarray, "PD_whiplashes":PD_xarray})
+
+whiplash_dataset.to_netcdf('/home/bpuxley/Whiplash/whiplashes.nc')
 print('binary file saved')
 #########################################################################################
 #Plot the count of whiplash events across the region
