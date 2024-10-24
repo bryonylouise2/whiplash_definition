@@ -47,8 +47,8 @@ region_lon = {"test":[277,277.2],
               "SGL":[265,279], #southern great lakes
               "NNE":[279,295], #northern north east
               "SNE":[279,295], #southern north east
-              "WSE":[265,275], #western south east
-              "ESE":[275,295]} #eastern south east
+              "WSE":[265,279], #western south east
+              "ESE":[279,295]} #eastern south east
 
 region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
