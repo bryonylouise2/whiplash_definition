@@ -3,6 +3,10 @@
 ## Bryony Louise
 ## Last Edited: Monday October 21st 2024 
 #########################################################################################
+## Script to combine the multiple whiplashes.nc files for each region into one 
+## Bryony Louise
+## Last Edited: Monday October 21st 2024 
+#########################################################################################
 #Import Required Modules
 #########################################################################################
 import xesmf as xe
@@ -24,13 +28,10 @@ import gzip
 
 #########################################################################################
 #Regions For Analysis
-#########################################################################################
+#####################)####################################################################
 #Choose Region
-Regions = {"MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "SNE", "WSE", "ESE"}
-              
-#########################################################################################
-#Import Data
-#########################################################################################
+Regions = {"MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
+
 #########################################################################################
 #Import Data - load in all files
 #########################################################################################
@@ -45,8 +46,25 @@ for i in Regions:
 datasets = [xr.open_dataset(f) for f in pathfiles]
 print('Read in Data')
 
-combined = xr.combine_by_coords(datasets)
-print('Combined Datafiles')
+#firsthalf = [ds.isel(time=slice(0,100)) for ds in datasets]
+firsthalf = [ds.isel(time=slice(0,19358)) for ds in datasets]
+secondhalf = [ds.isel(time=slice(19358,38717)) for ds in datasets]
 
-combined.to_netcdf('scratch/bpuxley/Whiplash/whiplashes_CONUS.nc')
-print('Saved file to netcdf')
+print('Combined First Half 1915-1967: Started')
+firsthalf_combined = xr.combine_by_coords(firsthalf)
+print('Combined First Half 1915-1967: Ended')
+
+print('Saved First Half 1915-1967: Started')
+firsthalf_combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_CONUS_1915_1967.nc')
+print('Saved First Half to netcdf: Ended')
+
+del(firsthalf_combined)
+
+print('Combined second half 1968-2020: Started')
+secondhalf_combined = xr.combine_by_coords(secondhalf)
+print('Combined second half 1968-2020: Ended')
+
+print('Saved second half to netcdf: Started')
+secondhalf_combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_CONUS_1968_2020.nc')
+print('Saved second half to netcdf: Ended')
+
