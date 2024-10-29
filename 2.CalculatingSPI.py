@@ -37,7 +37,8 @@ Region = "WC"
 
 region_lon = {"test":[277,277.2],
               "CONUS":[235,295], 
-              "WC":[235,241], #west coast
+              "WCN":[235,241], #west coast north
+              "WCS":[235,241], #west coast south
               "MWN":[241,255], #mountain west north
               "MWC":[241,255], #moutain west central
               "MWS":[241,255], #mountain west south
@@ -52,7 +53,8 @@ region_lon = {"test":[277,277.2],
 
 region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
-              "WC":[30,50], #west coast
+              "WCN":[40,50], #west coast north
+              "WCS":[25,40], #west coast south
               "MWN":[42,50], #mountain west north 
               "MWC":[33,42], #moutain west central
               "MWS":[25,33], #moutain west south              
@@ -100,13 +102,16 @@ for i in tqdm(range(0, len(prec_2D.point))):
         print(i)
         series = prec_2D.prec[:,i].to_pandas()
         #print(series)
-        if series.isnull().all():
+        if series.isnull().all(): #if the whole series is nan, make spi values all nans
                 print('is all NaNs')
                 spi30_gamma[:,i] = series
-        elif np.nanmax(series) == 0.0:
+        elif series[0:round(len(series)*3/4)].isnull().all(): #if 3/4 of the whole series is nan, make spi values all nans
+                print('is 3/4 NaNs')
+                spi30_gamma[:,i] = series*np.nan
+        elif np.nanmax(series) == 0.0: #if the data is all zeros, make spi values all nans
                 print('erroneous data')
                 spi30_gamma[:,i] = series*np.nan
-        else:
+        else: #else calculate the spi
                 spi30_gamma[:,i] = si.spi(series, dist=scs.gamma, fit_freq="ME")
         #print(spi30_gamma)
 
