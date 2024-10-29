@@ -33,7 +33,8 @@ import functions #helper file of functions needed and used for database creation
 Region = "SGP"
 
 region_lon = {"CONUS":[235,295],
-              "WC":[235,241], #west coast
+              "WCN":[235,241], #west coast north
+              "WCS":[235,241], #west coast south
               "MWN":[241,255], #mountain west north
               "MWC":[241,255], #moutain west central
               "MWS":[241,255], #mountain west south
@@ -47,7 +48,8 @@ region_lon = {"CONUS":[235,295],
               "ESE":[275,286]} #eastern south east
 
 region_lat = {"CONUS":[25,50],
-              "WC":[30,50], #west coast
+              "WCN":[40,50], #west coast north
+              "WCS":[25,40], #west coast south
               "MWN":[42,50], #mountain west north 
               "MWC":[33,42], #moutain west central
               "MWS":[25,33], #moutain west south              
