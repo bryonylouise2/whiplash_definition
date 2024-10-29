@@ -1,7 +1,7 @@
 #########################################################################################
 ## Calculate the Standardised Precipitation Index (SPI) for all grid points across the CONUS between 1915-2020.
 ## Bryony Louise
-## Last Edited: Tuesday October 15th 2024 
+## Last Edited: Tuesday October 29th 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
