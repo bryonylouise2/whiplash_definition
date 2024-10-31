@@ -1,11 +1,7 @@
 #########################################################################################
 ## Script to combine the multiple whiplashes.nc files for each region into one 
 ## Bryony Louise
-## Last Edited: Monday October 21st 2024 
-#########################################################################################
-## Script to combine the multiple whiplashes.nc files for each region into one 
-## Bryony Louise
-## Last Edited: Monday October 21st 2024 
+## Last Edited: Tuesday October 29th 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -30,7 +26,7 @@ import gzip
 #Regions For Analysis
 #####################)####################################################################
 #Choose Region
-Regions = {"MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
+Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 
 #########################################################################################
 #Import Data - load in all files
