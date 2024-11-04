@@ -1,7 +1,7 @@
 #########################################################################################
 ## Consider the spatial continuity of grid points experiencing a whiplash event to determine events
 ## Bryony Louise
-## Last Edited: Wednesday October 23rd 2024 
+## Last Edited: Monday November 4th 2024 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -58,7 +58,7 @@ print('Lon: ' + str(p))
 density_DP = np.zeros((m,o,p))
 density_PD = np.zeros((m,o,p))
 
-for i in tqdm(range(29, m)): #loop through the timeseries from value 29 (first 30 values will be all nans)
+for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series turn 0 to 29 and when looking at the end of the series turn m to m-30 (first and last 30 values will be all nans)
         print('DP' + str(i))
         DP_field = dataset_DP[i,:,:].values
         if np.any(DP_field): #only run KDE code if at least one of the values is 1
@@ -70,7 +70,7 @@ for i in tqdm(range(29, m)): #loop through the timeseries from value 29 (first 3
                                                                 bandwidth=0.025,
                                                                         )
 
-for i in tqdm(range(29, m)): #loop through the timeseries from value 29 (first 30 values will be all nans)
+for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series turn 0 to 29 and when looking at the end of the series turn m to m-30 (first and last 30 values will be all nans)
         print('DP' + str(i))
         PD_field = dataset_PD[i,:,:].values
         if np.any(PD_field): #only run KDE code if at least one of the values is 1
