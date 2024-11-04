@@ -30,27 +30,22 @@ from matplotlib.colors import ListedColormap
 import functions
 
 #########################################################################################
-## WHY THESE - ASK TY
-#########################################################################################
-grid_lons = np.arange(227, 303.01, 0.1)
-grid_lats = np.arange(17, 58.01, 0.1)
-#########################################################################################
-
-#########################################################################################
 #Import Data - load in all files
 #########################################################################################
 dirname = '/scratch/bpuxley/Whiplash/'
 files = ['whiplashes_CONUS_1915_1967.nc', 'whiplashes_CONUS_1968_2020.nc']
 pathfile1 = os.path.join(dirname, files[0])
-pathfile2 = os.path.join(dirname, files[0])
+pathfile2 = os.path.join(dirname, files[1])
 
 dataset1 = xr.open_dataset(pathfile1)
 dataset2 = xr.open_dataset(pathfile2)
 
-dataset = dataset1
+#Split into managable time chunks for data processing
+dataset_DP = dataset2.DP_whiplashes.sel(time=slice("2008-01-01", "2020-12-31"))
+dataset_PD = dataset2.PD_whiplashes.sel(time=slice("2008-01-01", "2020-12-31"))
 
-lon, lat = np.meshgrid(dataset.lon.values, dataset.lat.values)
-m,o,p = dataset.DP_xarray.shape
+lon, lat = np.meshgrid(dataset_DP.lon.values, dataset_DP.lat.values)
+m,o,p = dataset_DP.shape
 
 print('Read in Data')
 print('Time: ' + str(m))
@@ -63,24 +58,38 @@ print('Lon: ' + str(p))
 density_DP = np.zeros((m,o,p))
 density_PD = np.zeros((m,o,p))
 
-for i in tqdm(range(29, m-30)): #loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
-        DP_field = dataset.DP_xarray[i,:,:].values
+for i in tqdm(range(29, m)): #loop through the timeseries from value 29 (first 30 values will be all nans)
+        print('DP' + str(i))
+        DP_field = dataset_DP[i,:,:].values
         if np.any(DP_field): #only run KDE code if at least one of the values is 1
-                density_DP[i, :, :] = functions.kde(orig_lon=dataset.lon.values,
-                                                                orig_lat=dataset.lat.values,
-                                                                grid_lon=dataset.lon.values,
-                                                                grid_lat=dataset.lat.values,
+                density_DP[i, :, :] = functions.kde(orig_lon=dataset_DP.lon.values,
+                                                                orig_lat=dataset_DP.lat.values,
+                                                                grid_lon=dataset_DP.lon.values,
+                                                                grid_lat=dataset_DP.lat.values,
                                                                 extreme=DP_field,
                                                                 bandwidth=0.025,
                                                                         )
 
+for i in tqdm(range(29, m)): #loop through the timeseries from value 29 (first 30 values will be all nans)
+        print('DP' + str(i))
+        PD_field = dataset_PD[i,:,:].values
+        if np.any(PD_field): #only run KDE code if at least one of the values is 1
+                density_PD[i, :, :] = functions.kde(orig_lon=dataset_PD.lon.values,
+                                                                orig_lat=dataset_PD.lat.values,
+                                                                grid_lon=dataset_PD.lon.values,
+                                                                grid_lat=dataset_PD.lat.values,
+                                                                extreme=PD_field,
+                                                                bandwidth=0.025,
+                                                                        )
+
+
 #########################################################################################
 #Save out the density file 
 #########################################################################################
-time = pd.date_range(start='1915-01-01', end='2020-12-31', freq='D')
-lats = dataset.lat
-lons = dataset.lon
-attrs = dataset.attrs
+time = dataset_DP.time
+lats = dataset_DP.lat
+lons = dataset_DP.lon
+attrs = dataset_DP.attrs
 
 dimensions=['time','lat','lon']
 coords = {
@@ -94,7 +103,8 @@ DP_density = xr.DataArray(density_DP, coords, dims=dimensions, name='Drought to 
 PD_density = xr.DataArray(density_PD, coords, dims=dimensions, name='Pluvial to Drought')
 density_dataset = xr.Dataset({"DP_density":DP_density, "PD_density":PD_density})
 
-density_dataset.to_netcdf('/scratch/bpuxley/Whiplasih/density_1915_1967.nc')
+#Remember to change filename to whatever years have been calculated
+density_dataset.to_netcdf('/scratch/bpuxley/Whiplash/density_2008_2020.nc')
 print('density file saved')
 
 #########################################################################################
