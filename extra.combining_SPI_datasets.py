@@ -34,7 +34,7 @@ Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "SNE",
 #########################################################################################
 #Import Data - load in all files
 #########################################################################################
-dirname= '/data2/bpuxley/SPI_30day'
+dirname= '/scratch/bpuxley/SPI_30day'
 
 pathfiles = []
 for i in Regions:
