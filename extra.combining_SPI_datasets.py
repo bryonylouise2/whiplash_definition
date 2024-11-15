@@ -26,7 +26,7 @@ import gzip
 #Regions For Analysis
 #########################################################################################
 #Choose Region
-Regions = {"WC", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "SNE", "WSE", "ESE"}
+Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "SNE", "NNE", "WSE", "ESE"}
               
 #########################################################################################
 #Import Data
