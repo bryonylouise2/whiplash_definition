@@ -46,6 +46,19 @@ for i in Regions:
 datasets = [xr.open_dataset(f) for f in pathfiles]
 print('Read in Data')
 
+#Split spi data in 10 year time periods
+time_1915_1924 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1925_1934 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1935_1944 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1945_1954 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1955_1964 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1965_1974 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1975_1984 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1985_1994 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_1995_2004 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_2005_2014 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+time_2015_2020 = [ds.isel(time=slice(0,19358)) for ds in datasets]
+
 combined = xr.combine_by_coords(datasets)
 print('Combined Datafiles')
 
