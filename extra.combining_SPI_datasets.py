@@ -164,7 +164,7 @@ combined = xr.combine_by_coords(time_2015_2020)
 print('2015-2020: Ended')
 
 print('Saving 2015-2020: Started')
-combined.to_netcdf('/scratch/bpuxley/SPI_30day/spi__2015_2020.nc')
+combined.to_netcdf('/scratch/bpuxley/SPI_30day/spi_2015_2020.nc')
 print('Saving 2015-2020: Ended')
 
 del(combined)
