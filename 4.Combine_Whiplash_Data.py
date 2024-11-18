@@ -31,7 +31,7 @@ Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE",
 #########################################################################################
 #Import Data - load in all files
 #########################################################################################
-dirname= '/scratch/bpuxley/Whiplash'
+dirname= '/data2/bpuxley/Whiplash/Regional_data'
 
 pathfiles = []
 for i in Regions:
@@ -60,7 +60,7 @@ combined = xr.combine_by_coords(time_1915_1924)
 print('1915-1924: Ended')
 
 print('Saving 1915-1924: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1915_1924.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1915_1924.nc')
 print('Saving 1915-1924: Ended')
 
 del(combined)
@@ -70,7 +70,7 @@ combined = xr.combine_by_coords(time_1925_1934)
 print('1925-1934: Ended')
 
 print('Saving 1925-1934: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1925_1934.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1925_1934.nc')
 print('Saving 1925-1934: Ended')
 
 del(combined)
@@ -80,7 +80,7 @@ combined = xr.combine_by_coords(time_1935_1944)
 print('1935-1944: Ended')
 
 print('Saving 1935-1944: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1935_1944.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1935_1944.nc')
 print('Saving 1935-1944: Ended')
 
 del(combined)
@@ -90,7 +90,7 @@ combined = xr.combine_by_coords(time_1945_1954)
 print('1945-1954: Ended')
 
 print('Saving 1945-1954: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1945_1954.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1945_1954.nc')
 print('Saving 1945-1954: Ended')
 
 del(combined)
@@ -100,7 +100,7 @@ combined = xr.combine_by_coords(time_1955_1964)
 print('1955-1964: Ended')
 
 print('Saving 1955-1964: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1955_1964.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1955_1964.nc')
 print('Saving 1955-1964: Ended')
 
 del(combined)
@@ -110,7 +110,7 @@ combined = xr.combine_by_coords(time_1965_1974)
 print('1965-1974: Ended')
 
 print('Saving 1965-1974: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1965_1974.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1965_1974.nc')
 print('Saving 1965-1974: Ended')
 
 del(combined)
@@ -120,7 +120,7 @@ combined = xr.combine_by_coords(time_1975_1984)
 print('1975-1984: Ended')
 
 print('Saving 1975-1984: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1975_1984.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1975_1984.nc')
 print('Saving 1975-1984: Ended')
 
 del(combined)
@@ -130,7 +130,7 @@ combined = xr.combine_by_coords(time_1985_1994)
 print('1985-1994: Ended')
 
 print('Saving 1985-1994: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1985_1994.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1985_1994.nc')
 print('Saving 1985-1994: Ended')
 
 del(combined)
@@ -140,7 +140,7 @@ combined = xr.combine_by_coords(time_1995_2004)
 print('1995-2004: Ended')
 
 print('Saving 1995-2004: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_1995_2004.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_1995_2004.nc')
 print('Saving 1995-2004: Ended')
 
 del(combined)
@@ -150,7 +150,7 @@ combined = xr.combine_by_coords(time_2005_2014)
 print('2005-2014: Ended')
 
 print('Saving 2005-2014: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_2005_2014.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_2005_2014.nc')
 print('Saving 2005-2014: Ended')
 
 del(combined)
@@ -160,7 +160,7 @@ combined = xr.combine_by_coords(time_2015_2020)
 print('2015-2020: Ended')
 
 print('Saving 2015-2020: Started')
-combined.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_2015_2020.nc')
+combined.to_netcdf('/data2/bpuxley/Whiplash/whiplashes_2015_2020.nc')
 print('Saving 2015-2020: Ended')
 
 del(combined)
