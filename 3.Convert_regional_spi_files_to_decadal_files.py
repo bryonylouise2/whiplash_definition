@@ -1,5 +1,5 @@
 #########################################################################################
-## Script to combine the multiple SPI.nc files for each region into decadal files 
+## Script to convert the regional SPI.nc files for each region into decadal files for later analysis
 ## Bryony Louise
 ## Last Edited: Thursday October 17th 2024 
 #########################################################################################
