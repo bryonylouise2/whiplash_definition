@@ -1,5 +1,5 @@
 #########################################################################################
-## Script to combine the multiple whiplashes.nc files for each region into one 
+## Script to convert regional whiplash data into decadal time periods for later analysis
 ## Bryony Louise
 ## Last Edited: Tuesday October 29th 2024 
 #########################################################################################
