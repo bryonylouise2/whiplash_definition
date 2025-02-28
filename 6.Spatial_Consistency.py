@@ -1,7 +1,7 @@
 #########################################################################################
 ## Consider the spatial continuity of grid points experiencing a whiplash event to determine events
 ## Bryony Louise
-## Last Edited: Monday November 4th 2024 
+## Last Edited: Friday February 28th 2025 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -32,17 +32,27 @@ import functions
 #########################################################################################
 #Import Data - load in all files
 #########################################################################################
-dirname = '/scratch/bpuxley/Whiplash/'
-files = ['whiplashes_CONUS_1915_1967.nc', 'whiplashes_CONUS_1968_2020.nc']
-pathfile1 = os.path.join(dirname, files[0])
-pathfile2 = os.path.join(dirname, files[1])
+years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
+			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
 
-dataset1 = xr.open_dataset(pathfile1)
-dataset2 = xr.open_dataset(pathfile2)
+#Whiplash Points from 4.Whiplash_Identification
+dirname= '/scratch/bpuxley/Whiplash'
+
+pathfiles = []
+
+for i in years:
+	filename = 'whiplashes_%s.nc'%(i)
+	pathfile = os.path.join(dirname, filename)
+	pathfiles.append(pathfile)
+
+whiplashes = xr.open_mfdataset(pathfiles, combine='by_coords')
 
 #Split into managable time chunks for data processing
-dataset_DP = dataset2.DP_whiplashes.sel(time=slice("2008-01-01", "2020-12-31"))
-dataset_PD = dataset2.PD_whiplashes.sel(time=slice("2008-01-01", "2020-12-31"))
+data_slice = years[0] #choose which years to look at
+start_year = years[0][0:4]
+end_year = years[0][5:9]
+dataset_DP = whiplashes.DP_whiplashes.sel(time=slice(start_year +'-01-01', end_year +'-12-31'))
+dataset_PD = whiplashes.PD_whiplashes.sel(time=slice(start_year +'-01-01', end_year +'-12-31'))
 
 lon, lat = np.meshgrid(dataset_DP.lon.values, dataset_DP.lat.values)
 m,o,p = dataset_DP.shape
@@ -104,44 +114,5 @@ PD_density = xr.DataArray(density_PD, coords, dims=dimensions, name='Pluvial to 
 density_dataset = xr.Dataset({"DP_density":DP_density, "PD_density":PD_density})
 
 #Remember to change filename to whatever years have been calculated
-density_dataset.to_netcdf('/scratch/bpuxley/Whiplash/density_2008_2020.nc')
+density_dataset.to_netcdf('/scratch/bpuxley/Density/density_%s.nc'%(data_slice))
 print('density file saved')
-
-#########################################################################################
-#Plot different days to view events
-#########################################################################################
-fig = plt.figure(figsize = (6,7), dpi = 300, tight_layout =True)
-
-cmap = ListedColormap(['white', 'purple', 'white'])
-
-# First subplot with the count of drought-to-pluvial whiplash number
-ax1 = fig.add_subplot(211, projection=ccrs.PlateCarree()) #ccrs.LambertConformal())
-
-ax1.add_feature(cfeature.COASTLINE)
-ax1.add_feature(cfeature.BORDERS, linewidth=1)
-ax1.add_feature(cfeature.STATES, edgecolor='black')
-
-ax1.set_extent([-130, -60, 21, 50], crs=ccrs.PlateCarree())
-
-cs = plt.contourf(lon, lat, df_whiplash.DP_whiplashes[428,:,:].values, transform=ccrs.PlateCarree(), levels=np.arange(0, 1.1, 0.1), cmap = 'Purples') 
-
-plt.title('Drought-to-Pluvial')
-
-# Second subplot with thr count of pluvial-to-drought whiplash number
-ax2 = fig.add_subplot(212, projection=ccrs.PlateCarree()) #ccrs.LambertConformal())
-
-ax2.add_feature(cfeature.COASTLINE)
-ax2.add_feature(cfeature.BORDERS, linewidth=1)
-ax2.add_feature(cfeature.STATES, edgecolor='black')
-
-ax2.set_extent([-130, -60, 21, 50], crs=ccrs.PlateCarree())
-
-cs = plt.contourf(lon, lat, density_DP[428,:,:], transform=ccrs.PlateCarree(), levels=np.arange(0, 1.1, 0.1), cmap = 'Purples') 
-fig.colorbar(cs, ax=ax2, orientation='horizontal', pad=0.05)
-
-plt.title('Pluvial-to-Drought')
-
-plt.show(block=False)
-
-plt.savefig('/home/bpuxley/Definition_and_Climatology/Plots/Whiplashes_%s_1915_2020'%(Region), bbox_inches = 'tight', pad_inches = 0.1)    
-
