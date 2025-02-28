@@ -1,0 +1,107 @@
+#########################################################################################
+## Calculate the area of all polygons that comes out of the KDE process.
+## Bryony Louise
+## Last Edited: Wednesday February 5th 2025
+#########################################################################################
+#Import Required Modules
+#########################################################################################
+import xesmf as xe
+import numpy as np
+import xarray as xr
+import dask
+from tqdm import tqdm
+import time
+from datetime import datetime, timedelta, date
+from netCDF4 import Dataset, num2date, MFDataset
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from matplotlib.path import Path
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import spei as si
+import pandas as pd
+import scipy.stats as scs
+import os
+
+#########################################################################################
+#Import Functions
+#########################################################################################
+import functions
+
+#########################################################################################
+#Import Data
+#########################################################################################
+years =
+
+dirname= '/data2/bpuxley/Density/density_2015_2020.nc'
+
+all_densities = xr.open_dataset(dirname)
+
+#Split into DP and PD
+DP_densities = all_densities.DP_density
+PD_densities = all_densities.PD_density
+
+m,o,p = DP_densities.shape
+dates = all_densities.time.values
+
+grid_lons = all_densities.lon.values
+grid_lats = all_densities.lat.values
+
+print('Read in Data')
+#########################################################################################
+#Calculate area of all polygons
+#########################################################################################
+ISOPLETH_DP = 0.4878 #the 99th percentile of all DP density fields
+ISOPLETH_PD = 0.4783 #the 99th percentile of all PD density fields
+
+#Drought-to-Pluvial
+areas_DP = []
+polys_DP = []
+kept_dates_DP = []
+
+for i in tqdm(range(0,m)): #loop through the timeseries
+	DP_field = DP_densities[i,:,:].values
+	if np.any(DP_field):  #only run code if at least one of the values is 1
+            a, p = functions.calc_area(grid_lons, grid_lats, DP_field,
+                                     isopleth=ISOPLETH_DP, area_threshold=0)
+            areas_DP.extend(a)
+            polys_DP.extend(p)
+            kept_dates_DP.extend([dates[i]] * len(a))
+
+data_for_file_dp = {
+    'Drought_Date': pd.DatetimeIndex([i - pd.DateOffset(days=29) for i in kept_dates_DP]),
+    'Pluvial_Date': pd.DatetimeIndex([i + pd.DateOffset(days=1) for i in kept_dates_DP]),
+    'Whiplash_Date': pd.DatetimeIndex([i for i in kept_dates_DP]),
+    'Area' : areas_DP,
+    'geometry' : polys_DP 
+    }
+
+df_dp = pd.DataFrame(data_for_file_dp)
+df_dp.to_csv(f'/data2/bpuxley/Databases/potential_events_DP_2015_2020.csv', index=False)
+
+
+#Pluvial-to-Drought
+areas_PD = []
+polys_PD = []
+kept_dates_PD = []
+
+for i in tqdm(range(0,m)): #loop through the timeseries
+	PD_field = PD_densities[i,:,:].values
+	if np.any(PD_field):  #only run code if at least one of the values is 1
+            a, p = functions.calc_area(grid_lons, grid_lats, PD_field,
+                                     isopleth=ISOPLETH_PD, area_threshold=0)
+            areas_PD.extend(a)
+            polys_PD.extend(p)
+            kept_dates_PD.extend([dates[i]] * len(a))
+
+data_for_file_pd = {
+    'Pluvial_Date': pd.DatetimeIndex([i - pd.DateOffset(days=29) for i in kept_dates_PD]),
+    'Drought_Date': pd.DatetimeIndex([i + pd.DateOffset(days=1) for i in kept_dates_PD]),
+    'Whiplash_Date': pd.DatetimeIndex([i for i in kept_dates_PD]),
+    'Area' : areas_PD,
+    'geometry' : polys_PD 
+    }
+
+df_pd = pd.DataFrame(data_for_file_pd)
+df_pd.to_csv(f'/data2/bpuxley/Databases/potential_events_PD_2015_2020.csv', index=False)
+
