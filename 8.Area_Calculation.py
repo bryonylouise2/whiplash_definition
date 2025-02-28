@@ -34,7 +34,10 @@ import functions
 years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
 			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
 
-dirname= '/data2/bpuxley/Density/density_2015_2020.nc'
+#Choose which file to look at
+data_slice = years[0] #choose which years to look at
+
+dirname= '/data2/bpuxley/Density/density_%s.nc'%(data_slice)
 
 all_densities = xr.open_dataset(dirname)
 
@@ -78,8 +81,7 @@ data_for_file_dp = {
     }
 
 df_dp = pd.DataFrame(data_for_file_dp)
-df_dp.to_csv(f'/data2/bpuxley/Databases/potential_events_DP_2015_2020.csv', index=False)
-
+df_dp.to_csv(f'/data2/bpuxley/Databases/potential_events_DP_%s.csv'%(data_slice), index=False)
 
 #Pluvial-to-Drought
 areas_PD = []
@@ -104,5 +106,5 @@ data_for_file_pd = {
     }
 
 df_pd = pd.DataFrame(data_for_file_pd)
-df_pd.to_csv(f'/data2/bpuxley/Databases/potential_events_PD_2015_2020.csv', index=False)
+df_pd.to_csv(f'/data2/bpuxley/Databases/potential_events_PD_%s.csv'%(data_slice), index=False)
 
