@@ -1,15 +1,21 @@
 #########################################################################################
 ## File of functions needed and used for database creation
 ## Bryony Louise
-## Last Edited: Wednesday January 8th 2025
+## Last Edited: Friday February 28th 2025
 #########################################################################################
 #Import Required Modules
 #########################################################################################
 import gzip
 import numpy as np
+import pandas as pd
 from sklearn.neighbors import KernelDensity
 from shapely.geometry import Polygon
 import shapely.vectorized
+from tqdm import tqdm
+import scipy.stats as scs
+import statsmodels.api as sm
+import xarray as xr
+from datetime import datetime, timedelta, date
 
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
@@ -154,7 +160,7 @@ def calc_polygon_statistics(lons, lats, spi_drought, spi_pluvial, polygon): #whi
         3. SPI Change (area_averaged)
         4. Drought SPI (max - magnitude only)
         5. Pluvial SPI (max - magnitude only)
-		6. SPI Change (max_change)
+	6. SPI Change (max_change)
 
     Parameters
     ----------
@@ -190,21 +196,166 @@ def calc_polygon_statistics(lons, lats, spi_drought, spi_pluvial, polygon): #whi
 	drought_tmp = np.ma.mean(spi_drought_new, axis=-1)  # avg across lons first
 	pluvial_tmp = np.ma.mean(spi_pluvial_new, axis=-1)  # avg across lons first
     
-	drought_avg = np.ma.average(drought_tmp, weights=weights)
-	pluvial_avg = np.ma.average(pluvial_tmp, weights=weights)
-    
-	#drought_spi_area_avg = 
-	#pluvial_spi_area_avg =  
-	#spi_change_area_avg = pluvial_spi_area_avg - drought_spi_area_avg
+	drought_spi_area_avg = np.ma.average(drought_tmp, weights=weights)
+	pluvial_spi_area_avg = np.ma.average(pluvial_tmp, weights=weights)
+	spi_change_area_avg = pluvial_spi_area_avg - drought_spi_area_avg
   
 	drought_spi_max = np.ma.min(spi_drought_new) # Drought SPI (max - magnitude only) 
 	pluvial_spi_max = np.ma.max(spi_pluvial_new) # Pluvial SPI (max - magnitude only) 
+	
+	spi_change_max = np.ma.max(spi_pluvial_new - spi_drought_new)
     
 	return dict(
-		drought_spi_area_avg,
-        pluvial_spi_area_avg,
-        spi_change_area_avg,
-        drought_spi_max,
-        pluvial_spi_max,
-        spi_change_max
+		drought_spi_area_avg=drought_spi_area_avg,
+        pluvial_spi_area_avg=pluvial_spi_area_avg,
+        spi_change_area_avg=spi_change_area_avg,
+        drought_spi_max=drought_spi_max,
+        pluvial_spi_max=pluvial_spi_max,
+        spi_change_max=spi_change_max,
         	)
+
+def linreg(x, y, min_lag, max_lag):
+	# Initialize matrices
+	slopes = []
+	yintercepts = []
+	rvalues = []
+	pvalues = []
+	stderrors = []
+	# How to disypher what lag relationships mean:
+		# Negative lag implies that x at the moment correlates with your y in the future
+		# Positive lag implies that x at the moment correlates with you y in the past
+	for lag in tqdm(range(min_lag,max_lag+1)):	# itterate from min_lag to max_lag (+1 because of range function)
+		if lag == 0:	
+			slope, yintercept, rvalue, pvalue, stderror = scs.linregress(x, y)
+		elif lag < 0:
+			slope, yintercept, rvalue, pvalue, stderror = scs.linregress(x[:lag], y[-lag:])
+		elif lag > 0:
+			slope, yintercept, rvalue, pvalue, stderror = scs.linregress(x[lag:], y[:-lag])
+		
+		# Append the values!
+		slopes.append(slope)
+		yintercepts.append(yintercept)
+		rvalues.append(rvalue)
+		pvalues.append(pvalue)
+		stderrors.append(stderror)
+
+	# Compile data into a dataarray for easy management
+	print('Starting Compilation')
+	da_reg = xr.DataArray(
+		data=np.arange(min_lag,max_lag+1),
+		dims='lag',
+		coords=dict(
+			slope = ('lag', slopes),
+			yintercept = ('lag', yintercepts),
+			rvalue = ('lag', rvalues),
+			pvalue = ('lag', pvalues),
+			stderror= ('lag',stderrors)
+			),
+		name='lin_reg'
+		)
+
+	return da_reg
+	
+def pearsons_corr(x, y, min_lag, max_lag, alternative_hypothesis):
+	# Initialize matrices
+	corr_coef = []
+	pvalues = []
+	# How to disypher what lag relationships mean:
+		# Negative lag implies that x at the moment correlates with your y in the future
+		# Positive lag implies that x at the moment correlates with you y in the past
+	for lag in tqdm(range(min_lag,max_lag+1)):	# itterate from min_lag to max_lag (+1 because of range function)
+		if lag == 0:	
+			stat, pvalue = scs.pearsonr(x, y, alternative=str(alternative_hypothesis))
+		elif lag < 0:
+			stat, pvalue = scs.pearsonr(x[:lag], y[-lag:], alternative=str(alternative_hypothesis))
+		elif lag > 0:
+			stat, pvalue = scs.pearsonr(x[lag:], y[:-lag], alternative=str(alternative_hypothesis))
+		
+		# Append the values!
+		corr_coef.append(stat)
+		pvalues.append(pvalue)
+
+	# Compile data into a dataarray for easy management
+	print('Starting Compilation')
+	da_reg = xr.DataArray(
+		data=np.arange(min_lag,max_lag+1),
+		dims='lag',
+		coords=dict(
+			corr_coef = ('lag', corr_coef),
+			pvalue = ('lag', pvalues),
+			),
+		name='pearsons_corr_coeff'
+		)
+
+	return da_reg
+	
+def subset_events(df, overlap_days):
+	subset_index = []
+	subset_index.append(0)
+	first_column_name = df.columns[0]
+	first_column = df.iloc[:, 0]
+	for i in range(0, len(first_column)-1):
+		target_row = df.iloc[i]
+		overlap_date = (pd.to_datetime(target_row[first_column_name]).date() + timedelta(days=overlap_days)).strftime('%Y-%m-%d')
+		if first_column[i+1] <= overlap_date:
+			subset_index.append(i)
+		else:
+			break
+	
+	subset_index = list(set(subset_index))
+	subset = df.iloc[subset_index]
+	polys = [shapely.wkt.loads(i) for i in subset.geometry]
+	
+	num_regions = len(subset)
+
+	lat = np.arange(25.15625, 50.03125, 0.0625)
+	lon = np.arange(235.40625, 293.03125, 0.0625) #Livneh Grid
+	grid_lons, grid_lats = np.meshgrid(lon,lat)
+	
+	regions_masked = np.zeros((num_regions, lat.size, lon.size))
+	
+	for i,p in enumerate(polys):
+		regions_masked[i,:,:] = _mask_outside_region(lon=grid_lons, lat=grid_lats, polygon=p)
+		
+	n,y,x = regions_masked.shape
+	regions_masked = regions_masked.reshape(n,y*x)
+	return regions_masked.astype(int)
+
+def group_events(arr, thresh):
+    coefs = np.zeros((arr.shape[0]))
+    for i in range(coefs.shape[0]):
+    	coefs[i], _ = scs.pearsonr(x=arr[0,:], y=arr[i,:])
+    iloc = np.where(coefs >= thresh)[0]
+    return coefs, iloc	
+    
+def start_dates(df):
+	subset_begin_ind = np.where((df.Day_No == 0))[0]
+	dates = df[df.columns[4]].iloc[subset_begin_ind].reset_index(drop=True)
+	
+	return dates
+	
+def end_dates_and_polys(df):
+	end_dates = []
+	polygons = []
+	for i in tqdm(range(0,np.nanmax(df.Event_No))):
+		subset = df.iloc[np.where((df.Event_No == i+1))[0]]
+		end_dates.append(df[df.columns[4]].iloc[subset.Day_No.idxmax()])
+		polygons.append(shapely.wkt.loads(df.geometry.iloc[subset.Area.idxmax()]))
+		
+	return end_dates, polygons 
+
+def QuantileRegression(quantiles, df, data):
+	X = sm.add_constant(df['time']) # Add constant for intercept in regression
+	models = {q: sm.QuantReg(data, X).fit(q=q) for q in quantiles} # Fit Quantile Regression models for different quantiles
+	
+	# Predict values for visualization
+	x_range = np.linspace(df['time'].min(), df['time'].max(), 100)
+	X_pred = sm.add_constant(x_range)
+
+	predictions = {q: models[q].predict(X_pred) for q in quantiles}
+
+	#Find the slope of the lines
+	slopes = {p: round(scs.linregress(x_range, predictions[p]).slope, 3) for p in predictions}
+	
+	return x_range, predictions, slopes
+
