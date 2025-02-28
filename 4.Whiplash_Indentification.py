@@ -1,5 +1,6 @@
 #########################################################################################
 ## Identify whiplash occurrences for all grid points across the CONUS between 1915-2020.
+## Use regional SPI files - need all times at each individual grid points
 ## Bryony Louise
 ## Last Edited: Tuesday October 29th 2024 
 #########################################################################################
