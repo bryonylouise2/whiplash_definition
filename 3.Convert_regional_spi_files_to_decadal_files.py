@@ -1,7 +1,7 @@
 #########################################################################################
 ## Script to convert the regional SPI.nc files for each region into decadal files for later analysis
 ## Bryony Louise
-## Last Edited: Thursday October 17th 2024 
+## Last Edited: Tuesday April 1st 2025 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
