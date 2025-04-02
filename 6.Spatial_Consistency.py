@@ -68,9 +68,7 @@ print('Lon: ' + str(p))
 density_DP = np.zeros((m,o,p))
 density_PD = np.zeros((m,o,p))
 
-#np.any() no longer works in new numpy update - nan returns true as its not zero so an all nan now returns true
 for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series turn 0 to 29 and when looking at the end of the series turn m to m-30 (first and last 30 values will be all nans)
-        print('DP' + str(i))
         DP_field = dataset_DP[i,:,:].values
         if np.any(~np.isnan(DP_field)): #only run KDE code if at least one of the values is 1
                 density_DP[i, :, :] = functions.kde(orig_lon=dataset_DP.lon.values,
@@ -82,7 +80,6 @@ for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the be
                                                                         )
 
 for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series turn 0 to 29 and when looking at the end of the series turn m to m-30 (first and last 30 values will be all nans)
-        print('DP' + str(i))
         PD_field = dataset_PD[i,:,:].values
         if np.any(~np.isnan(PD_field)): #only run KDE code if at least one of the values is 1
                 density_PD[i, :, :] = functions.kde(orig_lon=dataset_PD.lon.values,
