@@ -1,3 +1,9 @@
+Precipitation whiplash events have been increasingly studied in the scientific literature over the recent decade. However, no studies have considered the spatial coherence of grid points in their examination of whiplash events. Therefore, we developed an algorithm that defines spatially coherent precipitation whiplash events on the subseasonal-to-seasonal timescale between 1915 and 2020. We define precipitation whiplash events to occur when the 30-day Standardized Precipitation Index (SPI) moves from at or above +1 to at or below -1, or vice versa. Once grid points were identified as having undergone a whiplash occurrence, Kernel Density Estimation was used to create event polygons, taking into
+consideration the continuity of grid points. Events were then clustered into geographical regions using k-means clustering, allowing for the examination of their climatology and characteristics across the continental United States (CONUS).
+
+Journal Article:  Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’ - In Review
+Complete Databases: Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’. Zenodo. doi: 10.5281/zenodo.16414184.
+
 # whiplash_definition
 
 Order of Files
