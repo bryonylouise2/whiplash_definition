@@ -18,7 +18,7 @@ Order of Files
  		This file calculates the Standardized Precipitation Index (SPI) across the CONUS from 1915 to 2020. SPI can either be computed for CONUS completely or split into 12 different regions to save on memory. This file will also output a plot of the SPI, allowing for visualization of the data. Choose from 30-, 60-, 90-, or 180- days.
    	Output: netCDF file of SPI data and a .png plot of the SPI data.
 
-3.
+3. Convert_regional_spi_files_to_decadal_files.py
   
 4. Whiplash_Indentification.py
 		This file identifies whiplash occurrences for all grid points across the CONUS between 1915-2020. This file will also output a plot of the whiplash count at each individual grid point across the region.
