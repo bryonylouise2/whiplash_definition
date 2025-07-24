@@ -1,9 +1,10 @@
-Precipitation whiplash events have been increasingly studied in the scientific literature over the recent decade. However, no studies have considered the spatial coherence of grid points in their examination of whiplash events. Therefore, we developed an algorithm that defines spatially coherent precipitation whiplash events on the subseasonal-to-seasonal timescale between 1915 and 2020. We define precipitation whiplash events to occur when the 30-day Standardized Precipitation Index (SPI) moves from at or above +1 to at or below -1, or vice versa. Once grid points were identified as having undergone a whiplash occurrence, Kernel Density Estimation was used to create event polygons, taking into
-consideration the continuity of grid points. Events were then clustered into geographical regions using k-means clustering, allowing for the examination of their climatology and characteristics across the continental United States (CONUS).
+Precipitation whiplash events have been increasingly studied in the scientific literature over the recent decade. However, no studies have considered the spatial coherence of grid points in their examination of whiplash events. Therefore, we developed an algorithm that defines spatially coherent precipitation whiplash events on the subseasonal-to-seasonal timescale between 1915 and 2020. We define precipitation whiplash events to occur when the 30-day Standardized Precipitation Index (SPI) moves from at or above +1 to at or below -1, or vice versa. Once grid points were identified as having undergone a whiplash occurrence, Kernel Density Estimation was used to create event polygons, taking into consideration the continuity of grid points. Events were then clustered into geographical regions using k-means clustering, allowing for the examination of their climatology and characteristics across the continental United States (CONUS). The developed definition is designed in such a way that it can be adapted, and the databases generated can be used in future studies to greatly enhance the understanding of precipitation whiplash events across the CONUS.
 
-Journal Article:  Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’ - In Review
+For more information and details regarding the event identification, please see the journal article:  Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’ - In Review.
 
-Complete Databases: Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’. Zenodo. doi: 10.5281/zenodo.16414184.
+For access to the complete databases for drought-to-pluvial, pluvial-to-drought, drought, and pluvial events, please see the .csv files: Puxley, B. L. and Martin, E. R. (2025) ‘A Continental United States Climatology of Precipitation Whiplash Using a New Event-Based Definition’. Zenodo. doi: 10.5281/zenodo.16414184.
+
+Any use of the programs in this GitHub repository should cite the journal article Puxley, B. L. and Martin, E. R. (2025). Any use of the databases in the Zenodo repository should cite the journal article and the Zenodo repository.
 
 # whiplash_definition
 
@@ -14,10 +15,21 @@ Order of Files
 		Input: Precipitation data
 
 2. CalculatingSPI.py
- 		This file calculates the Standardized Precipitation Index (SPI) across the CONUS between 1915-2020. SPI can either be computed for CONUS completely or split into 12 different regions to save on memory. This file will also output a plot of the SPI to allow for a visualization of the data.
+ 		This file calculates the Standardized Precipitation Index (SPI) across the CONUS from 1915 to 2020. SPI can either be computed for CONUS completely or split into 12 different regions to save on memory. This file will also output a plot of the SPI, allowing for visualization of the data. Choose from 30-, 60-, 90-, or 180- days.
    	Output: netCDF file of SPI data and a .png plot of the SPI data.
 
-3. Whiplash_Indentification.py
+3.
+  
+4. Whiplash_Indentification.py
 		This file identifies whiplash occurrences for all grid points across the CONUS between 1915-2020. This file will also output a plot of the whiplash count at each individual grid point across the region.
 		Input: NetCDF file of SPI data.
     Output: 
+
+5. Spatial_Consistency.py
+6. Density_Calculation.py
+7. Area_Calculation.py
+8. Make_Area_Plot.py
+9. Database_Creation.py
+10. Independence_Algorithm.py
+11. Clustering_Events.py
+     
