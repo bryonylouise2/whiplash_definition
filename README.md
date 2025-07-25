@@ -16,20 +16,22 @@ Order of Files
 
 2. CalculatingSPI.py
  		This file calculates the Standardized Precipitation Index (SPI) across the CONUS from 1915 to 2020. SPI can either be computed for CONUS completely or split into 12 different regions to save on memory. This file will also output a plot of the SPI, allowing for visualization of the data. Choose from 30-, 60-, 90-, or 180- days.
-   	Output: netCDF file of SPI data and a .png plot of the SPI data.
+   		Output: netCDF file of SPI data and a .png plot of the SPI data.
 
 3. Convert_regional_spi_files_to_decadal_files.py
+   		This file combines the regional SPI.nc files (if each region were run separately) into a CONUS-wide dataset, which is then split into decadal periods for later analysis. Can be edited to convert a CONUS-wide file into decadal files.
+   		Output: 
   
-4. Whiplash_Indentification.py
+5. Whiplash_Indentification.py
 		This file identifies whiplash occurrences for all grid points across the CONUS between 1915-2020. This file will also output a plot of the whiplash count at each individual grid point across the region.
 		Input: NetCDF file of SPI data.
     Output: 
 
-5. Spatial_Consistency.py
-6. Density_Calculation.py
-7. Area_Calculation.py
-8. Make_Area_Plot.py
-9. Database_Creation.py
-10. Independence_Algorithm.py
-11. Clustering_Events.py
+6. Spatial_Consistency.py
+7. Density_Calculation.py
+8. Area_Calculation.py
+9. Make_Area_Plot.py
+10. Database_Creation.py
+11. Independence_Algorithm.py
+12. Clustering_Events.py
      
