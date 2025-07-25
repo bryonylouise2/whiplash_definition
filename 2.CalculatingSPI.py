@@ -1,16 +1,19 @@
 #########################################################################################
-## Calculate the Standardised Precipitation Index (SPI) for all grid points across the CONUS between 1915-2020.
+## Calculate the Standardised Precipitation Index (SPI) for all grid points across the 
+## CONUS from 1915 to 2020.
 ## Bryony Louise
-## Last Edited: Tuesday October 29th 2024 
+## Last Edited: Friday, July 25th, 2025 
+## Output: netCDF file of rolling SPI values (choose from 30-, 60-, 90-, or 180- days) at 
+## a ~ 6 km grid resolution from 1915 to 2020; and a PNG file of the average SPI across 
+## the chosen region for visualization.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
 import xarray as xr
 import dask
 from tqdm import tqdm
-import time
 from datetime import datetime, timedelta, date
 from netCDF4 import Dataset, num2date, MFDataset
 import matplotlib.pyplot as plt
@@ -22,7 +25,7 @@ import scipy.stats as scs
 import os
 
 #########################################################################################
-#Import Data
+# Import Data
 #########################################################################################
 filename = 'prec.1915_2020.nc'
 dirname= '/home/bpuxley/'
@@ -33,7 +36,7 @@ df_precip = xr.open_dataset(pathfile)
 print('read in data')
 
 #########################################################################################
-#Regions For Analysis
+# Regions For Analysis (Split into regions to save on memory or run on entire CONUS)
 #########################################################################################
 #Choose Region
 Region = "WC"
@@ -73,7 +76,7 @@ region_lat = {"test":[35.1,35.3],
 inputlon = region_lon[Region]
 inputlat = region_lat[Region]
 
-#slice the data to region of interest
+#slice the data to the region of interest
 prec_obs = df_precip.sel(lat=slice(inputlat[0], inputlat[1]), lon=slice(inputlon[0], inputlon[1]))
 m,o,p = len(prec_obs.time), len(prec_obs.lat), len(prec_obs.lon)
 del(df_precip)
@@ -83,21 +86,23 @@ print('Lat: '+ str(o))
 print('Lon: '+ str(p))
 
 ####################################################################################
-#Calculate 30-day rolling sum of precipitation throughout the time period
+# Calculate the  rolling sum of precipitation throughout the period 
+# Chose between 30-, 60-, 90-, or 180- day rolling sums by changing the window
 #########################################################################################
 print('About to calculate 30-day rolling sum')
 window = 30
 prec_rolling = prec_obs.rolling(time=window).sum()
 print('Calculated 30-day rolling sum')
+
 #########################################################################################
-#Calculate Climate Indices: SPI
+# Calculate Climate Indices: SPI
 #########################################################################################
-#First regrid precipitation data to space,time (2D)
+#First regrid precipitation data to space, time (2D)
 prec_2D = prec_rolling.stack(point=('lat', 'lon'))
 print('regridded precipitation data to 2D array')
 
 #create an empty array to store the spi data
-spi30_gamma = np.zeros(([m,o*p]))*np.nan
+spi_gamma = np.zeros(([m,o*p]))*np.nan
 
 #Loop through each grid point and calculate the SPI
 print('starting loop to calculate SPI')
@@ -107,30 +112,29 @@ for i in tqdm(range(0, len(prec_2D.point))):
         #print(series)
         if series.isnull().all(): #if the whole series is nan, make spi values all nans
                 print('is all NaNs')
-                spi30_gamma[:,i] = series
+                spi_gamma[:,i] = series
         elif series[0:round(len(series)*3/4)].isnull().all(): #if 3/4 of the whole series is nan, make spi values all nans
                 print('is 3/4 NaNs')
-                spi30_gamma[:,i] = series*np.nan
+                spi_gamma[:,i] = series*np.nan
         elif np.nanmax(series) == 0.0: #if the data is all zeros, make spi values all nans
                 print('erroneous data')
-                spi30_gamma[:,i] = series*np.nan
+                spi_gamma[:,i] = series*np.nan
         else: #else calculate the spi
-                spi30_gamma[:,i] = si.spi(series, dist=scs.gamma, fit_freq="ME")
-        #print(spi30_gamma)
+                spi_gamma[:,i] = si.spi(series, dist=scs.gamma, fit_freq="ME")
+        #print(spi_gamma)
 
 #reshape back into a 3D array (time, lat, lon)
-spi30_gamma_new = np.reshape(spi30_gamma, [m, o, p])
+spi_gamma_new = np.reshape(spi_gamma, [m, o, p]) #This line may be incorrect; may need to specify reshape method or unstack first. Check the plot after computing.
 
 #########################################################################################
-#Convert the numpy array back to an xarray dataset
+# Convert the numpy array back to an xarray dataset
 #########################################################################################
 time = pd.date_range(start='1915-01-01', end='2020-12-31', freq='D')
 lats = prec_obs.lat
 lons = prec_obs.lon
 attrs = prec_obs.attrs
 
-
-dimensions=['time','lat','lon']
+dimensions=['time', 'lat', 'lon']
 coords = {
                         'time': time,
                         'lat': lats,
@@ -138,23 +142,23 @@ coords = {
                         }
 #attributes = {'sources': 'Livneh et al., 2013 & PRISM, 2004', 'references': 'http://www.esrl.noaa.gov/psd/data/gridded/data.livneh.html','}
 
-spi30_xarray = xr.DataArray(spi30_gamma_new, coords, dims=dimensions, name='spi_30day')
-spi30_dataset = xr.Dataset({"spi_30day":spi30_xarray})
+spi_xarray = xr.DataArray(spi_gamma_new, coords, dims=dimensions, name='spi_%s_day'%(window))
+spi_dataset = xr.Dataset({'spi_%s_day'%(window):spi_xarray})
 #########################################################################################
-#Save File out as a netCDF file
+# Save File out as a netCDF file
 #########################################################################################
-spi30_dataset.to_netcdf('/scratch/bpuxley/SPI30_%s.nc'%(Region))
+spi_dataset.to_netcdf('/scratch/bpuxley/SPI_%s_%s.nc'%(window, Region))
 
 #########################################################################################
-#Calculate and Plot the Average SPI for the region - to check if it looks correct
+# Calculate and Plot the Average SPI for the region - to check if it looks correct
 #########################################################################################
 #Calculate the average SPI over the time period at each grid point
-spi_sum = np.nansum(spi30_gamma_new, axis=0)
+spi_sum = np.nansum(spi_gamma_new, axis=0)
 spi_mean = spi_sum/m
 
 lon, lat = np.meshgrid(prec_obs.lon.values, prec_obs.lat.values)
 #########################################################################################
-#Plot the SPI data
+# Plot the SPI data
 #########################################################################################
 fig = plt.figure(figsize = (6,7), dpi = 300, tight_layout =True)
 
@@ -173,4 +177,4 @@ fig.colorbar(cs1, ax=ax1, orientation='horizontal', pad=0.05)
 
 plt.title('SPI Mean %s'%(Region))
 
-plt.savefig('/scratch/bpuxley/Plots/spi_%s'%(Region), bbox_inches = 'tight', pad_inches = 0.1)    
+plt.savefig('/scratch/bpuxley/Plots/spi_%s.png'%(Region), bbox_inches = 'tight', pad_inches = 0.1)    
