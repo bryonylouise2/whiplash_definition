@@ -1,9 +1,11 @@
 #########################################################################################
 ## Script to convert regional whiplash data into decadal periods for later analysis
 ## Bryony Louise
-## Last Edited: Friday, July 25th 2025
-## Input:
-## Output: 
+## Last Edited: Friday, July 25th, 2025
+## Input: regional whiplash data
+## Output: multiple netCDF files of identified whiplash occurrences at a ~ 6 km grid resolution from
+## 1915 to 2020, split into 10-year decade periods. If files were regional, they have been
+## combined into CONUS-wide.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
