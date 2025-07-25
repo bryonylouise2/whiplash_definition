@@ -4,7 +4,7 @@
 ## decadal files.
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025 
-## Input: regional SPI Data
+## Input: regional SPI data
 ## Output: multiple netCDF files of rolling SPI values at a ~ 6 km grid resolution from
 ## 1915 to 2020, split into 10-year decade periods. If files were regional, they have been
 ## combined into CONUS-wide.
