@@ -1,7 +1,9 @@
 #########################################################################################
-## Script to convert regional whiplash data into decadal time periods for later analysis
+## Script to convert regional whiplash data into decadal periods for later analysis
 ## Bryony Louise
-## Last Edited: Tuesday October 29th 2024 
+## Last Edited: Friday, July 25th 2025
+## Input:
+## Output: 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
