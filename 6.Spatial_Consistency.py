@@ -4,7 +4,8 @@
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Decadal whiplash occurrence files.
-## Output: 
+## Output: netCDF files of the density of whiplash grid points at each day throughout the
+## period. Higher values represent a greater density of whiplash occurrences.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
