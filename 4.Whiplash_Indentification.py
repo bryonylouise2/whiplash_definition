@@ -3,7 +3,9 @@
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
-## Output: netCDF file of identified whiplash occurrences 
+## Output: netCDF file of identified whiplash occurrences at a ~ 6 km grid resolution 
+## from 1915 to 2020, and a PNG file of the average SPI across the chosen region for 
+## visualization.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
@@ -70,7 +72,8 @@ inputlat = region_lat[Region]
 #########################################################################################
 # Import Data
 #########################################################################################
-filename = 'SPI_30_%s.nc'%(Region)
+window = 30 #choose from 60-, 90-, or 180
+filename = 'SPI_%s_%s.nc'%(window, Region)
 dirname= '/scratch/bpuxley/SPI_30day'
 
 pathfile = os.path.join(dirname, filename)
@@ -88,7 +91,7 @@ print('Lon: '+ str(p))
 #########################################################################################
 # Loop through each grid point and identify occurrences of whiplashes
 #########################################################################################
-spi = df_spi.spi_30day #create variable spi which contains the spi data from the data array
+spi = df_spi.spi_30_day #create variable spi which contains the spi data from the data array
 				
 DPcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point.
 PDcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point.
@@ -98,18 +101,21 @@ binary_array_PD = np.zeros((m,o,p))*np.nan #create an array to store the binary 
 
 #Loop through all days and identify the grid points that experience whiplash events 
 print('Starting loop to identify whiplash events')
-for i in tqdm(range(29, m-30)): #loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
-#Look for DP events by comparing SPI value at day i to SPI value at day i+30
+for i in tqdm(range(window-1, m-window)): 
+#i.e, for rolling 30-day periods; 
+## loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
+#Look for DP events by comparing the SPI value at day i to the SPI value at day i+30
 #day i is the 30 day SPI from day i-30 to day i; day i+30 is the 30 day SPI from day i to day i+30
+#If a window of 60-,90-, or 180- days was chosen, just replace 30 with that value
 	
 	#drought-to-pluvial whiplash events
-	bool_array = xr.where((spi[i].values <= -1) & (spi[i+30].values >= +1),True,False) #find all the grid points that experience a whiplash event
+	bool_array = xr.where((spi[i].values <= -1) & (spi[i+window].values >= +1),True,False) #find all the grid points that experience a whiplash event
 	binary_array_DP[i,:,:] = bool_array
 	
 	DPcount = DPcount + np.where(bool_array,1,0) #count the number of whiplash events at each grid point
 	
 	#pluvial-to-drought whiplash events
-	bool_array = xr.where((spi[i].values >= +1) & (spi[i+30].values <= -1),True,False) #find all the grid points that experience a whiplash event
+	bool_array = xr.where((spi[i].values >= +1) & (spi[i+window].values <= -1),True,False) #find all the grid points that experience a whiplash event
 	binary_array_PD[i,:,:] = bool_array
 	
 	PDcount = PDcount + np.where(bool_array,1,0) #count the number of whiplash events at each grid point
@@ -159,7 +165,7 @@ fig.colorbar(cs, ax=ax1, orientation='horizontal', pad=0.05)
 
 plt.title('Drought-to-Pluvial')
 
-# Second subplot with thr count of pluvial-to-drought whiplash number
+# Second subplot with the count of pluvial-to-drought whiplash number
 ax2 = fig.add_subplot(212, projection=ccrs.PlateCarree()) #ccrs.LambertConformal())
 
 ax2.add_feature(cfeature.COASTLINE)
