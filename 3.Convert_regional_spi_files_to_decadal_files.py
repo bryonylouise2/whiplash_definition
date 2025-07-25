@@ -1,7 +1,9 @@
 #########################################################################################
-## Script to convert the regional SPI.nc files for each region into decadal files for later analysis
+## Script to convert the regional SPI.nc files (if each region was run separately) into 
+## decadal files for later analysis. Can be edited to convert a CONUS wide file into 
+## decadal files.
 ## Bryony Louise
-## Last Edited: Tuesday April 1st 2025 
+## Last Edited: Friday, July 25th, 2025 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -23,7 +25,7 @@ import os
 import gzip
 
 #########################################################################################
-#Convert regional files into decadal time periods 
+#Convert regional files into decadal periods 
 #########################################################################################
 Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 time_periods = {'1915_1924','1925_1934','1935_1944','1945_1954', '1955_1964','1965_1974','1975_1984','1985_1994','1995_2004','2005_2014','2015_2020'}
@@ -39,7 +41,7 @@ for i in Regions:
 datasets = [xr.open_dataset(f) for f in pathfiles]
 print('Read in Data')
 
-#Split data in 10 year time periods
+#Split data into 10-year periods
 for period in sorted(time_periods):
 	print(period)
 	data = [ds.sel(time=slice(period[:4]+"-01-01",period[5:]+"-12-31")) for ds in datasets]
