@@ -47,7 +47,7 @@ for i in Regions:
 datasets = [xr.open_dataset(f) for f in pathfiles]
 print('Read in Data')
 
-#Split whiplash data in 10 year time periods
+#Split whiplash data into 10-year periods
 for period in sorted(time_periods):
 	print(period)
 	data = [ds.sel(time=slice(period[:4]+"-01-01",period[5:]+"-12-31")) for ds in datasets]
