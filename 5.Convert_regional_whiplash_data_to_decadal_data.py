@@ -1,5 +1,7 @@
 #########################################################################################
-## Script to convert regional whiplash data into decadal periods for later analysis
+## Script to convert the regional whiplash.nc files (if each region was run separately) into 
+## decadal files for later analysis. Can be edited to convert a CONUS-wide file into 
+## decadal files.
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025
 ## Input: regional whiplash data
