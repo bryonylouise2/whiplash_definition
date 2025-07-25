@@ -1,16 +1,20 @@
 #########################################################################################
 ## Augment PRISM and Livneh Datasets  
 ## Bryony Louise
-## Last Edited: Wednesday May 29th 2024 
+## Last Edited: Friday, July 25th, 2025 
+## Output: netCDF file of combined Livneh and PRISM precipitation at ~ 6 km grid resolution 
+## from 1915 to 2020
 #########################################################################################
 #Required Modules for this Function
 #########################################################################################
 import xesmf as xe
 import numpy as np
-from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
+import xarray as xr
+import pandas as pd
 from netCDF4 import Dataset, num2date, MFDataset
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 ##########################################################################################
 #Bilinearly interpolate PRISM precipitation data from a native 4-km grid onto Livneh's grid 
