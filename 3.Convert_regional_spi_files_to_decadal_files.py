@@ -7,7 +7,7 @@
 ## Input: regional SPI Data
 ## Output: multiple netCDF files of rolling SPI values at a ~ 6 km grid resolution from
 ## 1915 to 2020, split into 10-year decade periods. If files were regional, they have been
-## combined to CONUS-wide.
+## combined into CONUS-wide.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
