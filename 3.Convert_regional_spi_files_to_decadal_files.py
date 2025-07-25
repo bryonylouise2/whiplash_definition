@@ -5,7 +5,7 @@
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -25,7 +25,7 @@ import os
 import gzip
 
 #########################################################################################
-#Convert regional files into decadal periods 
+# Convert regional files into decadal periods 
 #########################################################################################
 window = 30 #change if calculated a different window
 Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
