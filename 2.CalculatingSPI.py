@@ -3,6 +3,7 @@
 ## CONUS from 1915 to 2020.
 ## Bryony Louise
 ## Last Edited: Friday, July 25th, 2025 
+## Input: Precipitation Data
 ## Output: netCDF file of rolling SPI values (choose from 30-, 60-, 90-, or 180- days) at 
 ## a ~ 6 km grid resolution from 1915 to 2020; and a PNG file of the average SPI across 
 ## the chosen region for visualization.
