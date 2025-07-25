@@ -1,10 +1,11 @@
 #########################################################################################
-## Identify whiplash occurrences for all grid points across the CONUS between 1915-2020.
-## Use regional SPI files - need all times at each individual grid points
+## Identify whiplash occurrences for all grid points across the CONUS from 1915 to 2020.
 ## Bryony Louise
-## Last Edited: Tuesday October 29th 2024 
+## Last Edited: Friday, July 25th, 2025 
+## Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
+## Output: netCDF file of identified whiplash occurrences 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -24,11 +25,11 @@ import os
 import gzip
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
-import functions #helper file of functions needed and used for database creation
+import functions 
 #########################################################################################
-#Regions For Analysis
+# Regions For Analysis
 #########################################################################################
 #Choose Region
 Region = "SGP"
@@ -67,9 +68,9 @@ inputlon = region_lon[Region]
 inputlat = region_lat[Region]
 
 #########################################################################################
-#Import Data
+# Import Data
 #########################################################################################
-filename = 'SPI30_%s.nc'%(Region)
+filename = 'SPI_30_%s.nc'%(Region)
 dirname= '/scratch/bpuxley/SPI_30day'
 
 pathfile = os.path.join(dirname, filename)
@@ -85,12 +86,12 @@ print('Lat: '+ str(o))
 print('Lon: '+ str(p))
 
 #########################################################################################
-#Loop through each grid point and identify occurrences of whiplashes
+# Loop through each grid point and identify occurrences of whiplashes
 #########################################################################################
 spi = df_spi.spi_30day #create variable spi which contains the spi data from the data array
 				
-DPcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point
-PDcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point
+DPcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point.
+PDcount = np.zeros((o,p)) #create an array that is lat by lon to store the No of Events at each grid point.
 
 binary_array_DP = np.zeros((m,o,p))*np.nan #create an array to store the binary array of whiplash occurrences
 binary_array_PD = np.zeros((m,o,p))*np.nan #create an array to store the binary array of whiplash occurrences
@@ -115,30 +116,30 @@ for i in tqdm(range(29, m-30)): #loop through the timeseries from value 29 (firs
 
 print('whiplash events identifited')
 #########################################################################################
-#Save out the binary file of grid points meeting whiplash criteria
+# Save out the binary file of grid points meeting whiplash criteria
 #########################################################################################
-#functions.save('/home/bpuxley/Definition_and_Climatology/binary_array_DP', binary_array_DP)
-#functions.save('/home/bpuxley/Definition_and_Climatology/binary_array_PD', binary_array_PD)
-
 time = pd.date_range(start='1915-01-01', end='2020-12-31', freq='D')
 lats = df_spi.lat
 lons = df_spi.lon
 attrs = df_spi.attrs
 
-dimensions=['time','lat','lon']
+dimensions=['time', 'lat', 'lon']
 coords = {
 			'time': time,
 			'lat': lats,
 			'lon': lons
 			}
-#attributes = {'sources': 'Livneh et al., 2013 & PRISM, 2004', 'references': 'http://www.esrl.noaa.gov/psd/data/gridded/data.livneh.html','}
 
 DP_xarray = xr.DataArray(binary_array_DP, coords, dims=dimensions, name='Drought to Pluvial')
 PD_xarray = xr.DataArray(binary_array_PD, coords, dims=dimensions, name='Pluvial to Drought')
-whiplash_dataset = xr.Dataset({"DP_whiplashes":DP_xarray, "PD_whiplashes":PD_xarray})
+DP_count = xr.DataArray(DPcount, coords={'lat':lats, 'lon':lons}, dims=['lat','lon'], name='Drought to Pluvial Count')
+PD_count = xr.DataArray(PDcount, coords={'lat':lats, 'lon':lons}, dims=['lat','lon'], name='Pluvial to Drought Count')
 
-whiplash_dataset.to_netcdf('/home/bpuxley/Whiplash/whiplashes.nc')
-print('binary file saved')
+whiplash_dataset = xr.Dataset({"DP_whiplashes":DP_xarray, "PD_whiplashes":PD_xarray, "DP_count":DP_count, "PD_count":PD_count})
+
+whiplash_dataset.to_netcdf('/scratch/bpuxley/Whiplash/whiplashes_%s.nc'%(Region))
+print('whiplash file saved')
+
 #########################################################################################
 #Plot the count of whiplash events across the region
 #########################################################################################
