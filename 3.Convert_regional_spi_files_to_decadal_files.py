@@ -27,6 +27,7 @@ import gzip
 #########################################################################################
 #Convert regional files into decadal periods 
 #########################################################################################
+window = 30 #change if calculated a different window
 Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 time_periods = {'1915_1924','1925_1934','1935_1944','1945_1954', '1955_1964','1965_1974','1975_1984','1985_1994','1995_2004','2005_2014','2015_2020'}
 
@@ -34,7 +35,7 @@ dirname= '/scratch/bpuxley/SPI_30day'
 
 pathfiles = []
 for i in Regions:
-        filename = 'SPI30_%s.nc'%(i)
+        filename = 'SPI_%_%s.nc'%(window,i)
         pathfile = os.path.join(dirname, filename)
         pathfiles.append(pathfile)
 
