@@ -23,12 +23,14 @@ Order of Files
 3. Convert_regional_spi_files_to_decadal_files.py
    		This file combines the regional SPI.nc files (if each region were run separately) into a CONUS-wide dataset, which is then split into decadal periods for later analysis. Can be edited to convert a CONUS-wide file into decadal files.
    		Input: regional SPI Data
-		Output: multiple netCDF files of rolling SPI values at a ~ 6 km grid resolution from 1915 to 2020, split into 10-year decade periods. If files were regional, they have been combined into CONUS-wide.
+		Output: multiple netCDF files of rolling SPI values at a ~ 6 km grid resolution from 1915 to 2020, split into 10-year decade periods. If files were regional, they have been combined into a CONUS-wide file.
   
-5. Whiplash_Indentification.py
-		This file identifies whiplash occurrences for all grid points across the CONUS between 1915-2020. This file will also output a plot of the whiplash count at each individual grid point across the region.
-		Input: NetCDF file of SPI data.
-    Output: 
+4. Whiplash_Indentification.py
+		This file identifies whiplash occurrences for all grid points across the CONUS from 1915 to 2020. This file will also output a plot of the whiplash count at each grid point across the region.
+		Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
+		Output: netCDF file of identified whiplash occurrences at a ~ 6 km grid resolution from 1915 to 2020, and a PNG file of the average SPI across the chosen region for visualization.
+
+5.Convert_regional_whiplash_files_to_decadal_files.py
 
 6. Spatial_Consistency.py
 7. Density_Calculation.py
