@@ -10,9 +10,10 @@ Any use of the programs in this GitHub repository should cite the journal articl
 
 Order of Files
 1. Augment_PRISM_Livneh.py
-		This file combines the Livneh (1915-2012) and PRISM (2012-2020) datasets by bilineraly interpolating the PRISM precipitation dataset from its native 4 km grid onto Livneh's grid of about 6 km using python library xESMF (Zhuang et al. 2020).
+		This file combines the Livneh (1915-2012) and PRISM (2012-2020) datasets by bilinearly interpolating the PRISM precipitation dataset from its native 4 km grid onto Livneh's grid of about 6 km using the Python library xESMF (Zhuang et al. 2020).
 		Type: Function
 		Input: Precipitation data
+		Output: netCDF file of combined Livneh and PRISM precipitation at ~ 6 km grid resolution from 1915 to 2020
 
 2. CalculatingSPI.py
  		This file calculates the Standardized Precipitation Index (SPI) across the CONUS from 1915 to 2020. SPI can either be computed for CONUS completely or split into 12 different regions to save on memory. This file will also output a plot of the SPI, allowing for visualization of the data. Choose from 30-, 60-, 90-, or 180- days.
