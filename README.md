@@ -30,7 +30,7 @@ Order of Files
 		Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
 		Output: netCDF file of identified whiplash occurrences at a ~ 6 km grid resolution from 1915 to 2020, and a PNG file of the average SPI across the chosen region for visualization.
 
-5.Convert_regional_whiplash_files_to_decadal_files.py
+5. Convert_regional_whiplash_files_to_decadal_files.py
 
 6. Spatial_Consistency.py
 7. Density_Calculation.py
