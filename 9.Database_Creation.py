@@ -1,7 +1,14 @@
 ########################################################################################
-## Create the databases of precipitation whiplash events
-## Bryony Louise
-## Last Edited: Thursday February 6th 2025 
+## This script creates the databases of all of the precipitation whiplash events, subsetting 
+## by areal threshold (can be set to zero to keep all events) and also calculates relevant 
+## statistics such as: the area averaged SPI during the 30-day drought period, the area-averaged
+## SPI during the 30-day pluvial period, the area-averaged SPI change, the grid point magnitude 
+## maximum SPI during the 30-day drought and pluvial periods, respectively, and the grid point
+## maximum SPI change.
+## Bryony Louise Puxley
+## Last Edited: Monday, July 28th, 2025 
+## Input:
+## Output: 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -29,7 +36,7 @@ import os
 import functions
 
 #########################################################################################
-#Set Area Threshhold
+#Set Area Threshold
 #########################################################################################
 AREA = 175000
 
