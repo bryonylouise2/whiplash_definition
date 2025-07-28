@@ -1,7 +1,7 @@
 #########################################################################################
 ## Script to combine the multiple density.nc files into one file and calculate the 99th 
 ## percentile for polygons.
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Monday, July 28th, 2025 
 ## Input: decadal density files.
 ## Output: The 99th percentile of densities for drought-to-pluvial and pluvial-to-drought 
