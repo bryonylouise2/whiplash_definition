@@ -36,10 +36,14 @@ Order of Files
 		Output: multiple netCDF files of identified whiplash occurrences at a ~ 6 km grid resolution from 1915 to 2020, split into 10-year decade periods. If files were regional, they have been combined into a CONUS-wide file.
 
 7. Spatial_Consistency.py
+   		This file utilizes Kernel Density Estimation (KDE) to assess the spatial continuity of grid points experiencing a whiplash event and to determine the corresponding events.
+		Input: Decadal whiplash occurrence files.
+		Output: netCDF files of the density of whiplash grid points at each day throughout the period. Higher values represent a greater density of whiplash occurrences.
+
 8. Density_Calculation.py
-9. Area_Calculation.py
-10. Make_Area_Plot.py
-11. Database_Creation.py
-12. Independence_Algorithm.py
-13. Clustering_Events.py
+11. Area_Calculation.py
+12. Make_Area_Plot.py
+13. Database_Creation.py
+14. Independence_Algorithm.py
+15. Clustering_Events.py
      
