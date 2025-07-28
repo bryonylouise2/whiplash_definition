@@ -1,9 +1,12 @@
 #########################################################################################
-## Determine the autocorrelation of SPI across the CONUS
-## Bryony Louise
-## Last Edited: Tuesday January 28th 2025 
+## This script determines the temporal lag autocorrelation of SPI across the CONUS
+## Bryony Louise Puxley
+## Last Edited: Monday, July 28th, 2025 
+## Input: Either decadal SPI files or a time-only-averaged (averaged across lat and lon)
+## SPI file.
+## Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -23,14 +26,13 @@ import scipy.stats as scs
 import shapely.wkt
 import os
 
-
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Create a time-only-average file of SPI values across the CONUS (run on oscer)
+# Create a time-only-average file of SPI values across the CONUS (run on oscer)
 #########################################################################################
 '''
 years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974',
@@ -62,7 +64,7 @@ df.to_netcdf('/scratch/bpuxley/spi_time_average.nc')
 '''
 
 #########################################################################################
-#Import Data - load previously made time averaged file
+# Import Data - load previously made time-averaged file
 #########################################################################################
 dirname= '/data2/bpuxley/SPI_30day/spi_time_average.nc'
 spi = xr.open_dataset(dirname)
@@ -70,13 +72,13 @@ spi = xr.open_dataset(dirname)
 spi30 = spi.time_avg.load()
 
 #########################################################################################
-#Calculate the autocorrelation of SPI at each individual grid point
+# Calculate the autocorrelation of SPI at each individual grid point
 #########################################################################################
 lag = 80 #in days
 corr = functions.pearsons_corr(spi30, spi30, 0, lag, 'greater')
 
 #########################################################################################
-#Calculate the significance
+# Calculate the significance
 #########################################################################################
 alpha1 = 0.05
 
@@ -88,7 +90,7 @@ for i in tqdm(range(0,lag+1)):
 		stipple.append('False')
 
 #########################################################################################
-#Plot the correlation
+# Plot the correlation
 #########################################################################################
 fig = plt.figure(figsize = (10,10), dpi = 300, tight_layout =True)
 
