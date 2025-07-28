@@ -3,7 +3,8 @@
 ## the appropriate number of clusters determined in 11.Determine_Clusters.py.
 ## Bryony Louise Puxley
 ## Last Edited: Monday, July 28th, 2025
-## Input: 
+## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events and 
+## chosen Cluster Number.
 ## Output: 
 #########################################################################################
 # Import Required Modules
@@ -11,7 +12,6 @@
 import xesmf as xe
 import numpy as np
 import xarray as xr
-import dask
 from tqdm import tqdm
 import time
 from datetime import datetime, timedelta, date
@@ -21,7 +21,6 @@ from matplotlib.colors import ListedColormap
 import matplotlib.cm as cm
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import spei as si
 import pandas as pd
 import scipy.stats as scs
 from shapely.ops import unary_union
@@ -150,7 +149,7 @@ df_PD['boundary_points'] = [list(poly.exterior.coords) for poly in polygons_PD]
 #########################################################################################
 # Find Cluster Polygons
 #########################################################################################
-new_df_dp = df_DP[['Event_No','geometry','polygon','centroids','boundary_points']]
+new_df_dp = df_DP[['Event_No', 'geometry', 'polygon', 'centroids', 'boundary_points']]
 new_df_dp = pd.concat([new_df_dp, cluster_matrix_dp], axis=1)
 
 cluster_no = 7 #choose cluster number
@@ -241,12 +240,10 @@ plt.title("Event Clusters ($\\it{k}$ = %s)"%(cluster_no), loc = "left", fontsize
 
 plt.savefig('/home/bpuxley/Definition_and_Climatology/Plots/Clusters/k_means_event_clusters.eps', bbox_inches = 'tight', pad_inches = 0.1)    
 
-
 #########################################################################################
 # Assign Events to the 7 clusters - largest areal overlap (intersection area)
 # event polygon overlaps with cluster polygon, and you assign it to the one with the largest intersecting area.
 #########################################################################################
-
 def assign_cluster_no(df, cluster_polygons):
 	#Check for invalid events
 	invalid_events = df[~df['polygon'].apply(lambda g: g.is_valid)]
@@ -270,7 +267,6 @@ df_PD = assign_cluster_no(df_PD, cluster_polygons)
 ###########################################################################################
 # Duplicate Cluster Numbers to match the length of each event and match the events database
 ###########################################################################################
-
 def duplicate_cluster_numbers(initial_df, final_df, no_of_events):
 	event_cluster_nums = []
 	
