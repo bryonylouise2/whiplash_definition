@@ -1,7 +1,7 @@
 #########################################################################################
 ## Using Kernel Density Estimation; consider the spatial continuity of grid points 
 ## experiencing a whiplash event to determine events.
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Decadal whiplash occurrence files.
 ## Output: netCDF files of the density of whiplash grid points at each day throughout the
