@@ -69,3 +69,6 @@ Order of Files
 	Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of all areas, and a line plot of the percentiles relating to each area for both types of precipitation whiplash events.
 
 10.5. SPI_autocorrelation.py
+	This script determines the temporal lag autocorrelation of SPI across the CONUS
+	Input: Either decadal SPI files or a time-only-averaged (averaged across lat and lon) SPI file.
+	Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
