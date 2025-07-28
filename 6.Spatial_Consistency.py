@@ -7,7 +7,7 @@
 ## Output: netCDF files of the density of whiplash grid points at each day throughout the
 ## period. Higher values represent a greater density of whiplash occurrences.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -28,12 +28,12 @@ from sklearn.neighbors import KernelDensity
 from matplotlib.colors import ListedColormap
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Import Data - load in all files
+# Import Data - load in all files
 #########################################################################################
 time_periods = {'1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
 			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020'}
