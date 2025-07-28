@@ -3,6 +3,10 @@
 ## and calculate the 99th percentile for polygons.
 ## Bryony Louise
 ## Last Edited: Monday, July 28th, 2025 
+## Input: decadal density files.
+## Output: The 99th percentile of densities for drought-to-pluvial and pluvial-to-drought 
+## events to be used to draw the single contour for the polygon outlining the area defined
+## as having a whiplash event.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
