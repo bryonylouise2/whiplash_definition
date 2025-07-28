@@ -1,7 +1,7 @@
 #########################################################################################
 ## Calculate the Standardised Precipitation Index (SPI) for all grid points across the 
 ## CONUS from 1915 to 2020.
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Precipitation Data
 ## Output: netCDF file of rolling SPI values (choose from 30-, 60-, 90-, or 180- days) at 
