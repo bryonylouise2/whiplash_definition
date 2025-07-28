@@ -51,18 +51,21 @@ Order of Files
 		Output: Decadal CSV files (1 for drought-to-pluvial, 1 for pluvial-to-drought) that have a list of all potential events throughout the time frame, including: Drought Date, Pluvial Date, Whiplash Date, Area (km2), and polygon geometry. 
 
 9. Database_Creation.py
+		This script creates the databases of all of the precipitation whiplash events, subsetting by areal threshold (can be set to zero to keep all events), and also calculates relevant statistics such as: the area-averaged SPI during the 30-day drought period, the area-averaged SPI during the 30-day pluvial period, the area-averaged SPI change, the grid point magnitude maximum SPI during the 30-day drought and pluvial periods, respectively, and the grid point maximum SPI change.
+		Input: Decadal SPI files, decadal whiplash files, decadal density/KDE files, and decadal potential events CSV files.
+		Output: Two CSV files of drought-to-pluvial and pluvial-to-drought events.
 
 10. Independence_Algorithm.py
 		This script contains an objective post-processing algorithm to group "repeat" events,
 		Input: Subsetted by area event file from 9. Database_Creation.py
 		Output: A CSV file of either independent drought-to-pluvial or independent pluvial-to-drought events.
 
-
-
-15. Clustering_Events.py
+11. Clustering_Events.py
 
 # Supplementary/Extra Files
-8.5.Make_Area_Plot.py
+8.5. Make_Area_Plot.py
 	This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
      	Input: The CSV files of all potential events created in 8.Area_Calculation.py.
 	Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of all areas, and a line plot of the percentiles relating to each area for both types of precipitation whiplash events.
+
+10.5. SPI_autocorrelation.py
