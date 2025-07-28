@@ -52,8 +52,13 @@ Order of Files
 
 9. Database_Creation.py
 
+10. Independence_Algorithm.py
+		This script contains an objective post-processing algorithm to group "repeat" events,
+		Input: Subsetted by area event file from 9. Database_Creation.py
+		Output: A CSV file of either independent drought-to-pluvial or independent pluvial-to-drought events.
 
-14. Independence_Algorithm.py
+
+
 15. Clustering_Events.py
 
 # Supplementary/Extra Files
