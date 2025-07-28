@@ -1,9 +1,13 @@
 ########################################################################################
 ## Plot the distribution of all the areas 
 ## Bryony Louise
-## Last Edited: Thursday January 9th 2025 
+## Last Edited: Monday, July 28th, 2025 
+## Input: The CSV files of all potential events created in 8.Area_Calculation.py.
+## Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of 
+## all areas, and a line plot of the percentiles relating to each area for both types
+## of precipitation whiplash events.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -23,12 +27,12 @@ import scipy.stats as scs
 import os
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Import Data
+# Import Data
 #########################################################################################
 dirname= '/data2/bpuxley/Databases/'
 
@@ -52,9 +56,10 @@ df_DP = pd.concat([pd.read_csv(f) for f in DP_pathfiles], ignore_index=True)
 df_PD = pd.concat([pd.read_csv(f) for f in PD_pathfiles], ignore_index=True)
 
 #########################################################################################
-#Plot of area distributions
+# Plot of area distributions
 #########################################################################################
 fig = plt.figure(figsize = (10,10), dpi = 300, tight_layout =True)
+area_thresh = 175000
 
 percs = np.arange(1,101,1)
 bins = np.arange(0, 1600000, 25000)
@@ -62,22 +67,24 @@ bins = np.arange(0, 1600000, 25000)
 # First subplot of the area distributions of drought-to-pluvial (histogram: Frequency vs Area)
 ax1 = fig.add_subplot(221)
 plt.hist(df_DP.Area, bins, density = False, histtype ='bar',color='cornflowerblue', edgecolor ='k', linewidth=0.5)
+plt.axvline(x=area_thresh, color='r', linestyle ='--')
+
 plt.xticks(np.arange(0, 1700000, 200000))
 ax1.set_xticklabels(['0','','400,000', '','800,000', '', '1,200,000', '', '1,600,000'], fontsize=10)
 plt.yticks(np.arange(0, 31000, 2500))
 ax1.set_yticklabels(['0','','5,000','','10,000','','15,000', '','20,000','','25,000','','30,000'], fontsize=10)
 
-
 ax1.set_xlabel('Area ($km^2$)', fontsize = 10)
 ax1.set_ylabel('Frequency', fontsize = 10)
 plt.title("a) Distribution of Drought to Pluvial KDE Polygon Areas", fontsize=12)
-
 
 # Second subplot of the area distributions of drought-to-pluvial (Line: Area vs Percentile)
 area_percs = np.nanpercentile(df_DP.Area.tolist(), percs)
 
 ax2 = fig.add_subplot(222)
 plt.plot(percs, area_percs, color='k')
+plt.scatter(scs.percentileofscore(area_percs, area_thresh), area_thresh, marker='o', color='r', s=25, zorder=2)
+
 plt.xticks(np.arange(0,100,5))
 ax2.set_xticklabels(['0','','10','','20','','30','','40','','50','','60','','70','','80','','90',''], fontsize=10)
 plt.grid()
@@ -91,16 +98,16 @@ plt.title("b) Drought to Pluvial Area Percentiles", fontsize=12)
 # Third subplot of the area distributions of pluvial-to-drought (histogram: Frequency vs Area)
 ax3 = fig.add_subplot(223)
 plt.hist(df_PD.Area, bins, density = False, histtype ='bar',color='cornflowerblue', edgecolor ='k', linewidth=0.5)
+plt.axvline(x=area_thresh, color='r', linestyle ='--')
+
 plt.xticks(np.arange(0, 1700000, 200000))
 ax3.set_xticklabels(['0','','400,000', '','800,000', '', '1,200,000', '', '1,600,000'], fontsize=10)
 plt.yticks(np.arange(0, 31000, 2500))
 ax3.set_yticklabels(['0','','5,000','','10,000','','15,000', '','20,000','','25,000','','30,000'], fontsize=10)
 
-
 ax3.set_xlabel('Area ($km^2$)', fontsize = 10)
 ax3.set_ylabel('Frequency', fontsize = 10)
 plt.title("c) Distribution of Pluvial to Drought KDE Polygon Areas", fontsize=12)
-
 
 # Fourth subplot of the area distributions of pluvial-to-drought (Line: Area vs Percentile)
 area_percs = np.nanpercentile(df_PD.Area.tolist(), percs)
@@ -108,6 +115,8 @@ area_percs = np.nanpercentile(df_PD.Area.tolist(), percs)
 ax4 = fig.add_subplot(224)
 plt.plot(percs, area_percs, color='k')
 plt.xticks(np.arange(0,100,5))
+plt.scatter(scs.percentileofscore(area_percs, area_thresh), area_thresh, marker='o', color='r', s=25, zorder=2)
+
 ax4.set_xticklabels(['0','','10','','20','','30','','40','','50','','60','','70','','80','','90',''], fontsize=10)
 plt.grid()
 plt.yticks(np.arange(0, 1700000, 100000))
