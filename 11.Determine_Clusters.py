@@ -2,7 +2,7 @@
 ## This script determines the appropriate number of clusters to group events into regions 
 ## across the CONUS (k-means clustering). This script uses the Elbow Method (Thorndike, 1953) 
 ## and the Silhouette Coefficient (Rousseeuw, 1987).
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Monday, July 28th, 2025
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
 ## Output: PNG files. 1) The results of the Elbow Method, Silhouette Coefficient, Events
