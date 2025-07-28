@@ -1,47 +1,44 @@
 #########################################################################################
 ## An objective post-processing algorithm to group "repeat" events,
-## Bryony Louise
-## Last Edited: Monday February 10th 2025 
+## Bryony Louise Puxley
+## Last Edited: Monday, July 28th, 2025 
+## Input: Subsetted by area event file from 9. Database_Creation.py
+## Output: A CSV file of either independent drought-to-pluvial or independent 
+## pluvial-to-drought events.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
 import xarray as xr
-import dask
 from tqdm import tqdm
 import time
 from datetime import datetime, timedelta, date
 from netCDF4 import Dataset, num2date, MFDataset
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import spei as si
 import pandas as pd
 import scipy.stats as scs
 import shapely.wkt
 import os
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Import Events - load previously made event files
+# Import Events - load previously made event files
 #########################################################################################
 events_DP = pd.read_csv('/data2/bpuxley/Events/events_DP.csv')
 events_PD = pd.read_csv('/data2/bpuxley/Events/events_PD.csv')
 
 #########################################################################################
-#Call either Drought-to-Pluvial events or Pluvial-to-Drought Events
+# Call either Drought-to-Pluvial events or Pluvial-to-Drought Events
 #########################################################################################
 save_name = 'events_DP'
 df = events_DP
 
 #########################################################################################
-#Independence Algorithm
+# Independence Algorithm
 #########################################################################################
 ## Group polygons into similar groups if they have overlapping dates, areas and spatial
 ## correlations of >= 0.5.
@@ -85,14 +82,14 @@ while True:
         break
     
 #########################################################################################
-#Rearrange columns so 'Event_No' is column 1
+# Rearrange columns so 'Event_No' is column 1
 #########################################################################################
 cols = events.columns.tolist()
 cols = cols[-2:] + cols[:-2]    
 events = events[cols] 
 
 #########################################################################################
-#Save out file
+# Save out file
 #########################################################################################
 events.to_csv(f'/data2/bpuxley/Events/independent_%s.csv'%(save_name), index=False)
     
