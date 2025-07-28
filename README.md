@@ -60,7 +60,10 @@ Order of Files
 		Input: Subsetted by area event file from 9. Database_Creation.py
 		Output: A CSV file of either independent drought-to-pluvial or independent pluvial-to-drought events.
 
-11. Clustering_Events.py
+11. Determine_Clusters.py
+    		This script determines the appropriate number of clusters to group events into regions across the CONUS (k-means clustering). This script uses the Elbow Method (Thorndike, 1953) and the Silhouette Coefficient (Rousseeuw, 1987).
+		Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+		Output: PNG files. 1) The results of the Elbow Method, Silhouette Coefficient, Events retained, and Hybrid Index to help determine the appropriate number of clusters. 2) The average polygons of all the events in each cluster for the entire range of k-values to view for spatial coherence, and 3) Supplementary Figure 4 from the journal article.
 
 # Supplementary/Extra Files
 8.5. Make_Area_Plot.py
