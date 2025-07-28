@@ -1,6 +1,6 @@
 #########################################################################################
 ## Identify whiplash occurrences for all grid points across the CONUS from 1915 to 2020.
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
 ## Output: netCDF file of identified whiplash occurrences at a ~ 6 km grid resolution 
