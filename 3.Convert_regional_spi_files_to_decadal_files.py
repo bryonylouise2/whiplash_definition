@@ -2,7 +2,7 @@
 ## Script to convert the regional SPI.nc files (if each region was run separately) into 
 ## decadal files for later analysis. Can be edited to convert a CONUS-wide file into 
 ## decadal files.
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: regional SPI data
 ## Output: multiple netCDF files of rolling SPI values at a ~ 6 km grid resolution from
