@@ -1,7 +1,8 @@
 #########################################################################################
 ## Augment PRISM and Livneh Datasets  
-## Bryony Louise
+## Bryony Louise Puxley
 ## Last Edited: Friday, July 25th, 2025 
+## Input: Precipitation Data
 ## Output: netCDF file of combined Livneh and PRISM precipitation at ~ 6 km grid resolution 
 ## from 1915 to 2020
 #########################################################################################
