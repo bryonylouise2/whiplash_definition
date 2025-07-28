@@ -1,29 +1,26 @@
 #########################################################################################
-## Script to combine the multiple densitys.nc files into one file 
-## and calculate the 99th percentile for polygons
+## Script to combine the multiple density.nc files into one file 
+## and calculate the 99th percentile for polygons.
 ## Bryony Louise
-## Last Edited: Tuesday November 12th 2024 
+## Last Edited: Monday, July 28th, 2025 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
-import xesmf as xe
 import numpy as np
 import xarray as xr
-import dask
-from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
-from netCDF4 import Dataset, num2date, MFDataset
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import spei as si
 import pandas as pd
+from netCDF4 import Dataset, num2date, MFDataset
 import scipy.stats as scs
 import os
-import gzip
+
 #########################################################################################
-#Import Data - load in all files
+# Periods
+#########################################################################################
+Years = {"1915_1924", "1925_1934", "1935_1944", "1945_1954", "1955_1964", "1965_1974",
+                        "1975_1984", "1985_1994", "1995_2004", "2005_2014", "2015_2020"}
+
+#########################################################################################
+# Import Data - load in all files
 #########################################################################################
 dirname= '/data2/bpuxley/Density/*.nc'
 
