@@ -41,6 +41,10 @@ Order of Files
 		Output: netCDF files of the density of whiplash grid points at each day throughout the period. Higher values represent a greater density of whiplash occurrences.
 
 8. Density_Calculation.py
+   		This file combines the multiple density.nc files into one file and calculates the 99th percentile, which is used to draw the polygons outlining the area defined as having a whiplash event.
+		Input: decadal density files.
+		Output: The 99th percentile of densities for drought-to-pluvial and pluvial-to-drought events to be used to draw the single contour for the polygon outlining the area defined as having a whiplash event.
+ 
 11. Area_Calculation.py
 12. Make_Area_Plot.py
 13. Database_Creation.py
