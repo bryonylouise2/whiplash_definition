@@ -1,6 +1,6 @@
 #########################################################################################
-## Script to combine the multiple density.nc files into one file 
-## and calculate the 99th percentile for polygons.
+## Script to combine the multiple density.nc files into one file and calculate the 99th 
+## percentile for polygons.
 ## Bryony Louise
 ## Last Edited: Monday, July 28th, 2025 
 ## Input: decadal density files.
