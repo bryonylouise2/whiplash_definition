@@ -106,7 +106,7 @@ for i in tqdm(range(0,m)): #loop through the timeseries
             areas_PD.extend(a)
             polys_PD.extend(p)
             kept_dates_PD.extend([dates[i]] * len(a))
-print('Drought-to-Pluvial loop: ended')
+print('Pluvial-to-Drought loop: ended')
 
 data_for_file_pd = {
     'Pluvial_Date': pd.DatetimeIndex([i - pd.DateOffset(days=29) for i in kept_dates_PD]),
