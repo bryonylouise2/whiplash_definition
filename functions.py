@@ -6,6 +6,7 @@
 #Import Required Modules
 #########################################################################################
 import gzip
+import math
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KernelDensity
@@ -14,6 +15,8 @@ import shapely.vectorized
 from tqdm import tqdm
 import scipy.stats as scs
 import statsmodels.api as sm
+from sklearn.utils import resample
+from sklearn.linear_model import QuantileRegressor
 import xarray as xr
 from datetime import datetime, timedelta, date
 
@@ -21,11 +24,9 @@ import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import cartopy.crs as ccrs
 
-
 # GLOBALS
 ORIG_PROJ = ccrs.PlateCarree()
 TARGET_PROJ = ccrs.AlbersEqualArea(central_latitude=37.5, central_longitude=265)
-
 
 #########################################################################################
 #Functions
@@ -63,9 +64,10 @@ def _determine_bandwidth(lon, lat):
     else:
         return 0.06
 '''
-
+#Kernel Density Estimation - used in 6.Spatial_Consistency.py to define large-scale
+# events considering spatial consistency
 def kde(orig_lon, orig_lat, grid_lon, grid_lat, extreme, **kwargs):
-    kwargs.setdefault("bandwidth", 0.02)#_determine_bandwidth(orig_lon, orig_lat))
+	kwargs.setdefault("bandwidth", 0.02)#_determine_bandwidth(orig_lon, orig_lat))
     kwargs.setdefault("metric", "haversine") #formula to calculate the distance - use as we as on a sphere
     kwargs.setdefault("kernel", "epanechnikov")
     kwargs.setdefault("algorithm", "ball_tree")
@@ -102,7 +104,7 @@ def get_contour(grid_lon, grid_lat, density, isopleth, **kwargs):
 def _coordinate_transform(x, y):
     return TARGET_PROJ.transform_points(ORIG_PROJ, x, y)
 
-
+#Calculate area of polygons - used in 8.Area_Calculation.py
 def calc_area(grid_lon, grid_lat, density, isopleth, area_threshold, **kwargs):
     contours_combined = get_contour(grid_lon, grid_lat, density, isopleth, **kwargs)
     contours_separate = separate_paths(contours_combined)
@@ -125,7 +127,9 @@ def calc_area(grid_lon, grid_lat, density, isopleth, area_threshold, **kwargs):
             areas.append(a)
             polygons.append(poly)
     return areas, polygons
-    
+
+# A function to separate multiple polygons that are classified as one polygon into their separate polygons.
+# Not used in code - another method was found.
 def separate_paths(contour, **kwargs):	
 	paths_by_layer = []
 	for i, joined_paths_in_layer in enumerate(contour.get_paths()):
@@ -149,6 +153,7 @@ def separate_paths(contour, **kwargs):
 		paths_by_layer.append(separated_paths_in_layer)
 	return separated_paths_in_layer
 
+# A function to mask the region outside of a polygon
 def _mask_outside_region(lon, lat, polygon):
     return shapely.vectorized.contains(geometry=polygon, x=lon, y=lat)
 
@@ -212,6 +217,52 @@ def calc_polygon_statistics(lons, lats, spi_drought, spi_pluvial, polygon): #whi
         drought_spi_max=drought_spi_max,
         pluvial_spi_max=pluvial_spi_max,
         spi_change_max=spi_change_max,
+        	)
+
+def calc_polygon_statistics_drought_pluvial_only(lons, lats, spi, polygon, max_process): #whiplash_points - not sure I need
+	"""
+    Function to calculate the following statistics for a given event polygon:
+        1. SPI (area_averaged)
+        2. SPI (max - magnitude only)
+
+    Parameters
+    ----------
+    lon : numpy.ndarray, type float
+        2-D array of longitudes
+    lat : numpy.ndarray, type float
+        2-D array of latitudes
+    spi : numpy.ndarray, type float
+        2-D array of SPI during specified month. Should have dimensionality (lat, lon).
+    polygon : shapely.geometry.Polygon
+        Shapely polygon for the event.
+
+    Returns
+    -------
+    Dictionary containing the 6 statistics given above; keys are drought_spi_area_avg, pluvial_spi_area_avg, spi_change_area_avg,
+    drought_spi_max, pluvial_spi_max, and spi_change_max.
+	"""
+    # mask to only event region
+	mask = _mask_outside_region(lons, lats, polygon)
+	spi_new = np.ma.masked_array(spi, ~mask)
+   
+    # mask any nans that slipped through
+	spi_new = np.ma.masked_invalid(spi_new)  
+
+	# area-avg spi
+	weights = np.cos(np.radians(lats[:, 0]))
+	spi_tmp = np.ma.mean(spi_new, axis=-1)  # avg across lons first
+    
+	spi_area_avg = np.ma.average(spi_tmp[0], weights=weights)
+
+	if max_process == 'drought':
+		spi_max = np.ma.min(spi_new) # Drought SPI (max - magnitude only) 
+	elif max_process == 'pluvial':
+		spi_max = np.ma.max(spi_new) # Pluvial SPI (max - magnitude only) 
+	
+    
+	return dict(
+		spi_area_avg=spi_area_avg,
+        spi_max=spi_max,
         	)
 
 def linreg(x, y, min_lag, max_lag):
@@ -334,6 +385,12 @@ def start_dates(df):
 	
 	return dates
 	
+def start_dates_droughts_pluvials(df):
+	subset_begin_ind = np.where((df.Day_No == 0))[0]
+	dates = df[df.columns[2]].iloc[subset_begin_ind].reset_index(drop=True)
+	
+	return dates
+	
 def end_dates_and_polys(df):
 	end_dates = []
 	polygons = []
@@ -343,19 +400,199 @@ def end_dates_and_polys(df):
 		polygons.append(shapely.wkt.loads(df.geometry.iloc[subset.Area.idxmax()]))
 		
 	return end_dates, polygons 
-
-def QuantileRegression(quantiles, df, data):
-	X = sm.add_constant(df['time']) # Add constant for intercept in regression
-	models = {q: sm.QuantReg(data, X).fit(q=q) for q in quantiles} # Fit Quantile Regression models for different quantiles
 	
-	# Predict values for visualization
-	x_range = np.linspace(df['time'].min(), df['time'].max(), 100)
-	X_pred = sm.add_constant(x_range)
+def end_dates_and_polys_droughts_pluvials(df):
+	end_dates = []
+	polygons = []
+	for i in tqdm(range(0,np.nanmax(df.Event_No))):
+		subset = df.iloc[np.where((df.Event_No == i+1))[0]]
+		end_dates.append(df[df.columns[2]].iloc[subset.Day_No.idxmax()])
+		polygons.append(shapely.wkt.loads(df.geometry.iloc[subset.Area.idxmax()]))
+		
+	return end_dates, polygons 
 
-	predictions = {q: models[q].predict(X_pred) for q in quantiles}
+#Weak (0.5-0.9); Moderate (1.0-1.4), Strong (1.5-1.9), Very Strong (>=2.0)
+def categorize_enso_strength(value):
+	if 1.0 > value >= 0.5:
+		return 1
+	if 1.5 > value >= 1.0:
+		return 2
+	if 2.0 > value >= 1.5:
+		return 3
+	if value >=2.0:
+		return 4
+	if -0.5 >= value > -1.0:
+		return -1
+	if -1.0 >= value > -1.5:
+		return -2
+	if -1.5 >= value > -2.0:
+		return -3
+	if value <=-2.0:
+		return -4
+	else:
+		return 0
 
-	#Find the slope of the lines
-	slopes = {p: round(scs.linregress(x_range, predictions[p]).slope, 3) for p in predictions}
+def categorize_enso_events(df, indices, value, min_consecutive, threshold, col):
+    """Assigns a value if at least min_consecutive values are in the range."""
+    start = None
+    for i in range(len(indices)):
+        if start is None:
+            start = indices[i]
+        if i == len(indices) - 1 or indices[i+1] != indices[i] + 1:
+            if indices[i] - start + 1 >= min_consecutive:
+            	df.loc[start:indices[i], col] = value
+            start = None
+
+#sklearn - must faster than statsmodel
+def QuantileRegression(x, y, quantiles):
+	#sklearn
+	x = np.array(x)
+	y = np.array(y)
+    
+	models = {q: QuantileRegressor(quantile=q, alpha=0) for q in quantiles}
+	{q: models[q].fit(x.reshape(-1, 1), y) for q in quantiles}
 	
-	return x_range, predictions, slopes
+	predictions = {q:  models[q].predict(x.reshape(-1, 1))for q in quantiles}
+	slopes = {q: round(models[q].coef_[0],3) for q in quantiles}
+	
+	return predictions, slopes
 
+def spans_zero(value1, value2):
+    return value1 * value2 > 0
+
+#sklearn - must faster than statsmodel
+def bca_bootstrap(x, y, quantiles, niter, alpha):
+    """
+    Perform BCa bootstrap for quantile regression slope significance testing.
+    
+    Parameters:
+    x (array-like): Independent variable.
+    y (array-like): Dependent variable.
+    quantile (float): Quantile level (e.g., 0.1, 0.5, 0.9).
+    niter (int): Number of bootstrap resamples.
+    alpha (float): Significance level
+    
+    Returns:
+    tuple: (original slope, lower CI, upper CI, p-value)
+    """
+    x = np.array(x)
+    y = np.array(y)
+    models = {q: QuantileRegressor(quantile=q, alpha=0) for q in quantiles}
+    {q: models[q].fit(x.reshape(-1, 1), y) for q in quantiles}
+    
+    orig_slopes = {q: round(models[q].coef_[0],3) for q in quantiles}
+    
+    lower_bounds = {}
+    upper_bounds = {}
+    pvalues = {}
+    sig = {}
+    linestyle = {}
+    
+    for q in quantiles:
+    	boot_slopes = []
+    	for _ in tqdm(range(niter)):
+    		idx = resample(range(len(y)), replace=True)
+    		x_boot = x[idx]
+    		y_boot = y[idx]
+    		boot_model = QuantileRegressor(quantile=q, alpha=0)
+    		boot_model.fit(x_boot.reshape(-1, 1), y_boot)
+    		
+    		boot_slopes.append(boot_model.coef_[0])
+    
+    	boot_slopes = np.array(boot_slopes)
+    
+    	# BCa confidence intervals
+    	z0 = scs.norm.ppf((boot_slopes < orig_slopes[q]).mean())
+    	
+    	if not np.isfinite(z0):
+    		print(f"Warning: z0 is infinite for quantile {q}, skipping BCa and p-value.")
+    		lower_bounds[q] = np.nan
+    		upper_bounds[q] = np.nan
+    		pvalues[q] = np.nan
+    		sig[q] = np.nan
+    		continue
+    	
+    	else:
+    		a = (np.sum((np.mean(boot_slopes) - boot_slopes)**3) /
+    				(6 * (np.sum((np.mean(boot_slopes) - boot_slopes)**2)**(3/2))))
+    				
+    		alpha_1 = scs.norm.cdf(z0 + (z0 + scs.norm.ppf(alpha / 2)) / (1 - a * (z0 + scs.norm.ppf(alpha / 2))))
+    		alpha_2 = scs.norm.cdf(z0 + (z0 + scs.norm.ppf(1 - alpha / 2)) / (1 - a * (z0 + scs.norm.ppf(1 - alpha / 2))))
+    		
+    		lower_bounds[q] = round(np.percentile(boot_slopes, 100 * alpha_1),3)
+    		upper_bounds[q] = round(np.percentile(boot_slopes, 100 * alpha_2),3)
+    		
+    		# P-value calculation (two-tailed test against null hypothesis of no trend)
+    		pvalues[q] = round(2 * min((boot_slopes > 0).mean(), (boot_slopes < 0).mean()),3)
+    		
+    		sig[q] = spans_zero(lower_bounds[q], upper_bounds[q])
+    		
+    		if sig[q] == True:
+    			linestyle[q] = '-'
+    		else:
+    			linestyle[q] = '--'
+    	
+    return orig_slopes, lower_bounds, upper_bounds, pvalues, sig, linestyle
+
+def permutation_test(data1, data2, num_permutations=10000):
+    observed_diff = round(np.mean(data2) - np.mean(data1),3)
+       
+    combined_data = np.concatenate([data1, data2])  # Merge both groups
+    
+    count = 0
+    for _ in range(num_permutations):
+    	np.random.shuffle(combined_data)  # Shuffle the data
+    		
+    	# Split the shuffled data into two new random groups
+    	perm_group1 = np.array(combined_data[:len(data1)])
+    	perm_group2 = np.array(combined_data[len(data1):])
+    		
+    	perm_diff = np.mean(perm_group2) - np.mean(perm_group1) # Compute new difference
+    		
+    	if abs(perm_diff) >= abs(observed_diff):  # Check if permuted diff is at least as extreme
+    		count += 1
+	
+    p_value = round(count / num_permutations,3)  # Compute p-value
+    	
+    return observed_diff, p_value
+    
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians
+    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    r = 6371  # Radius of earth in kilometers. Use 3959 for miles
+    return c * r
+
+def plot_largest_polygon(ax, polygons, colors, **kwargs):
+    # Flatten all geometries into a list of Polygons
+    all_polys = []
+    for polygon in polygons:
+        if polygon.geom_type == 'MultiPolygon':
+            all_polys.extend(polygon.geoms)
+        else:
+            all_polys.append(polygon)
+    
+    # Find the largest polygon by area
+    largest_poly = max(all_polys, key=lambda p: p.area)
+    
+    # Plot the largest polygon
+    x, y = largest_poly.exterior.xy
+    ax.plot(x, y, transform=ccrs.PlateCarree(), color=color, **kwargs)
+    
+    # Get centroid and add label
+    centroid = largest_poly.centroid
+    cx, cy = centroid.x, centroid.y
+    
+    ax.text(cx, cy, str(i+1), transform=ccrs.PlateCarree(),
+            ha='center', va='center', fontsize=10,
+            fontweight='bold', color=color,
+            bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.1', alpha=1))		
