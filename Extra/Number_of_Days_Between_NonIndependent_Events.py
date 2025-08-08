@@ -1,9 +1,10 @@
 #########################################################################################
-## Calculate and plot the days between dates within the database.
-## Bryony Louise
+## A script to calculate and plot the days between non-independent dates within the database.
+## Bryony Louise Puxley
 ## Last Edited: Wednesday, January 23rd, 2025
-## Input:
-## Output: 
+## Input: Subsetted by area event file from 9. Database_Creation.py
+## Output: A histogram of a) the number of days between drought-to-pluvial and 
+## b) pluvial-to-drought events.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
