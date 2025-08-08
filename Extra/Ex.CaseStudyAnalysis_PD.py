@@ -1,9 +1,9 @@
 #########################################################################################
-## Examine and Plot Specific Events - Pluvial to Drought
+## This script examines and creates GIFs of specific pluvial-to-drought events
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 8th, 2025
 ## Input: Decadal SPI, whiplash occurrences, normalized density, and independent 
-## pluvial-to-drought events csv. Choose event number or date.
+## pluvial-to-drought events CSV. Choose event number or date.
 ## Output: gifs of SPI during the drought period, SPI during the pluvial period, SPI change,
 ## and whiplash occurrences.
 #########################################################################################
