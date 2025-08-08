@@ -70,7 +70,7 @@ Order of Files
 
 # Supplementary/Extra Files
 functions.py
-
+	 This file contains most of the functions required for database creation.
 
 8.5. Make_Area_Plot.py
 	This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
