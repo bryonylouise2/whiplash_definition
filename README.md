@@ -69,6 +69,9 @@ Order of Files
     		This script clusters events into regions across the CONUS (k-means clustering) based on the appropriate number of clusters determined in 11.Determine_Clusters.py. The script uses the largest areal overlap (intersection area) to assign events to clusters.
 
 # Supplementary/Extra Files
+functions.py
+
+
 8.5. Make_Area_Plot.py
 	This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
      	Input: The CSV files of all potential events created in 8.Area_Calculation.py.
