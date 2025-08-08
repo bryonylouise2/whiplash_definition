@@ -1,7 +1,9 @@
 #########################################################################################
 ## Calculate and plot the days between dates within the database.
 ## Bryony Louise
-## Last Edited: Wednesday January 23rd 2025 
+## Last Edited: Wednesday, January 23rd, 2025
+## Input:
+## Output: 
 #########################################################################################
 #Import Required Modules
 #########################################################################################
