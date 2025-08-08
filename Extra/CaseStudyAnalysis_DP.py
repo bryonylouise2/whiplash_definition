@@ -1,9 +1,13 @@
 #########################################################################################
 ## Examine and Plot Specific Events - Drought to Pluvial
-## Bryony Louise
-## Last Edited: Monday February 10th 2025
+## Bryony Louise Puxley
+## Last Edited: Friday, August 8th, 2025
+## Input: Decadal SPI, whiplash occurrences, normalized density, and independent 
+## drought-to-pluvial events csv. Choose event number or date.
+## Output: gifs of SPI during the drought period, SPI during the pluvial period, SPI change,
+## and whiplash occurrences.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -25,7 +29,7 @@ import os
 import imageio
 
 #########################################################################################
-#Read in Data
+# Read in Data
 #########################################################################################
 years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
 			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
@@ -69,23 +73,25 @@ density = xr.open_mfdataset(pathfiles, combine='by_coords')
 print('Read in Data')
 
 #########################################################################################
-#Reading in Events
+# Reading in Events
 #########################################################################################
 #Read in events
 events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
+
 ##########################################################################################
-#Choose options
+# Choose options
 ##########################################################################################
 #Choose whiplash type
 df = events_DP
 
 #Can request event number?
 event_num = 153
+
 #Can choose date event starts? 
 #doi = "2001-04-10
 
 ##########################################################################################
-#Subset and Isolate Event
+# Subset and Isolate Event
 ##########################################################################################
 #subset based on event_no
 subset_ind = np.where((df.Event_No == event_num))[0]
@@ -99,13 +105,13 @@ third_column = df.columns[2]
 event_dates = event[third_column]
 
 ##########################################################################################
-#Plot - Change Information depending on whether looking at DP or PD
+# Plot - Change Information depending on whether looking at DP or PD
 ##########################################################################################
 #Lons, lats
 lons, lats = np.meshgrid(whiplashes.lon.values, whiplashes.lat.values) #create a meshgrid of lat,lon values
 
 ##########################################################################################
-#SPI Drought
+# SPI Drought
 ##########################################################################################
 pathfiles = []
 
@@ -149,13 +155,13 @@ with imageio.get_writer('/home/bpuxley/Definition_and_Climatology/Plots/Case_Stu
         writer.append_data(image)
 
 #############################################
-#Deleting Things 
+# Deleting Things 
 #############################################
 for filename in set(pathfiles):
     os.remove(filename)
 
 ##########################################################################################
-#SPI Pluvial
+# SPI Pluvial
 ##########################################################################################
 pathfiles = []
 
@@ -199,13 +205,13 @@ with imageio.get_writer('/home/bpuxley/Definition_and_Climatology/Plots/Case_Stu
         writer.append_data(image)
 
 #############################################
-#Deleting Things 
+# Deleting Things 
 #############################################
 for filename in set(pathfiles):
     os.remove(filename)
     
 ##########################################################################################
-#SPI Change
+# SPI Change
 ##########################################################################################
 pathfiles = []
 
@@ -252,14 +258,14 @@ with imageio.get_writer('/home/bpuxley/Definition_and_Climatology/Plots/Case_Stu
         writer.append_data(image)
 
 #############################################
-#Deleting Things 
+# Deleting Things 
 #############################################
 for filename in set(pathfiles):
     os.remove(filename)
 
 
 ##########################################################################################
-#Whiplash Points
+# Whiplash Points
 ##########################################################################################
 pathfiles = []
 
@@ -305,7 +311,7 @@ with imageio.get_writer('/home/bpuxley/Definition_and_Climatology/Plots/Case_Stu
         writer.append_data(image)
 
 #############################################
-#Deleting Things 
+# Deleting Things 
 #############################################
 for filename in set(pathfiles):
     os.remove(filename)
