@@ -80,4 +80,13 @@ functions.py
 10.5. SPI_autocorrelation.py
 	This script determines the temporal lag autocorrelation of SPI across the CONUS
 	Input: Either decadal SPI files or a time-only-averaged (averaged across lat and lon) SPI file.
+
+Number_of_Days_Between_Non
+A script to calculate and plot the days between non-independent dates within the database.
+## Bryony Louise Puxley
+## Last Edited: Wednesday, January 23rd, 2025
+## Input: Subsetted by area event file from 9. Database_Creation.py
+## Output: A histogram of a) the number of days between drought-to-pluvial and 
+## b) pluvial-to-drought events.
+ 
 	Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
