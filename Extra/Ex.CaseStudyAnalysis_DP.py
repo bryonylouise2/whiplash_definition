@@ -1,5 +1,5 @@
 #########################################################################################
-## This script examines and creates gifs of specific drought-to-pluvial events
+## This script examines and creates GIFs of specific drought-to-pluvial events
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 8th, 2025
 ## Input: Decadal SPI, whiplash occurrences, normalized density, and independent 
