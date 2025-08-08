@@ -70,23 +70,21 @@ Order of Files
 
 # Supplementary/Extra Files
 functions.py
-	 This file contains most of the functions required for database creation.
+	 		This file contains most of the functions required for database creation.
 
 8.5. Make_Area_Plot.py
-	This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
-     	Input: The CSV files of all potential events created in 8.Area_Calculation.py.
-	Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of all areas, and a line plot of the percentiles relating to each area for both types of precipitation whiplash events.
+			This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
+     		Input: The CSV files of all potential events created in 8.Area_Calculation.py.
+			Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of all areas, and a line plot of the percentiles relating to each area for both types of precipitation whiplash events.
 
 10.5. SPI_autocorrelation.py
-	This script determines the temporal lag autocorrelation of SPI across the CONUS
-	Input: Either decadal SPI files or a time-only-averaged (averaged across lat and lon) SPI file.
+			This script determines the temporal lag autocorrelation of SPI across the CONUS
+			Input: Either decadal SPI files or a time-only-averaged (averaged across lat and lon) SPI file.
+   			Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
 
-Number_of_Days_Between_Non
-A script to calculate and plot the days between non-independent dates within the database.
-## Bryony Louise Puxley
-## Last Edited: Wednesday, January 23rd, 2025
-## Input: Subsetted by area event file from 9. Database_Creation.py
-## Output: A histogram of a) the number of days between drought-to-pluvial and 
-## b) pluvial-to-drought events.
+Ex.Number_of_Days_Between_NonIndependent_Events.py
+			This script to calculate and plot the days between non-independent dates within the database.
+			Input: Subsetted by area event file from 9. Database_Creation.py
+   			Output: A histogram of a) the number of days between drought-to-pluvial and b) pluvial-to-drought events.
  
-	Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
+
