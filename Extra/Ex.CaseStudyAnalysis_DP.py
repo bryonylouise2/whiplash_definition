@@ -4,7 +4,7 @@
 ## Last Edited: Friday, August 8th, 2025
 ## Input: Decadal SPI, whiplash occurrences, normalized density, and independent 
 ## drought-to-pluvial events CSV. Choose event number or date.
-## Output: gifs of SPI during the drought period, SPI during the pluvial period, SPI change,
+## Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change,
 ## and whiplash occurrences.
 #########################################################################################
 # Import Required Modules
