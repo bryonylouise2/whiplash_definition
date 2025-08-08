@@ -1,11 +1,13 @@
 #########################################################################################
 ## A script to cluster events into regions across the CONUS (k-means clustering) based on
-## the appropriate number of clusters determined in 11.Determine_Clusters.py.
+## the appropriate number of clusters determined in 11.Determine_Clusters.py. The script
+## uses the largest areal overlap (intersection area) to assign events to clusters.
 ## Bryony Louise Puxley
 ## Last Edited: Monday, July 28th, 2025
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events and 
 ## chosen Cluster Number.
-## Output: 
+## Output: A PNG file of the chosen clusters numbered (Figure 4), and updated independent
+## event files (drought-to-pluvial and pluvial-to-drought) with a column for cluster number assignment.  
 #########################################################################################
 # Import Required Modules
 #########################################################################################
@@ -96,7 +98,7 @@ def assign_cluster(event_poly, clusters_df):
 
 
 #########################################################################################
-# Import Events - load previously made event files
+# Import Events - load previously made event files and extract only Day 0
 #########################################################################################
 events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
 events_PD = pd.read_csv('/data2/bpuxley/Events/independent_events_PD.csv')
@@ -130,7 +132,7 @@ lons, lats = np.meshgrid(lon,lat) #Livneh Grid
 o,p = lats.shape
 
 #########################################################################################
-# Polygons
+# Extract all event polygons, find the center and boundaries of each polygon
 #########################################################################################
 polygons_DP = [shapely.wkt.loads(i) for i in df_DP.geometry] #convert from nasty string of lat,lons to geometry object
 polygons_PD = [shapely.wkt.loads(i) for i in df_PD.geometry] #convert from nasty string of lat,lons to geometry object
@@ -157,7 +159,9 @@ cluster_no = 7 #choose cluster number
 cluster_points_dp, cluster_polygons_dp, cluster_areas_dp = find_avg_cluster_polygons(new_df_dp, cluster_no, cluster_matrix_dp)
 
 #########################################################################################
-# Change Cluster Numbers to something more intuitive
+# Change Cluster Numbers to something more intuitive - 1-7 from west to east
+# If using a different cluster number, mess around to decide what you want each cluster
+# named
 #########################################################################################
 cluster_polygons_dp.loc[5, 'cluster_no'] = 1
 cluster_polygons_dp.loc[2, 'cluster_no'] = 2
@@ -202,9 +206,8 @@ cluster_polys['avg_poly'] = cluster_polys['avg_poly'].apply(shapely.wkt.loads)
 #Plot Cluster Plot
 #########################################################################################
 colors = ['red', 'green', 'purple', 'saddlebrown', 'blue', 'black', 'orange', 'gold', 'pink', 'deeppink', 
-			'deepskyblue', 'springgreen', 'olive', 'tan', 'grey', 'darkred', 'cyan', 'mediumpurple','tomato','chocolate',
-			'yellow','lawngreen','lavender','plum','fuchsia','palevioletred','rosybrown','darkcyan','aquamarine','navy']
-
+			'deepskyblue', 'springgreen', 'olive', 'tan', 'grey', 'darkred', 'cyan', 'mediumpurple', 'tomato', 'chocolate',
+			'yellow', 'lawngreen', 'lavender', 'plum', 'fuchsia', 'palevioletred', 'rosybrown', 'darkcyan', 'aquamarine', 'navy']
 
 print(f"Processing k = {cluster_no}")
 
