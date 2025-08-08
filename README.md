@@ -65,6 +65,9 @@ Order of Files
 		Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
 		Output: PNG files. 1) The results of the Elbow Method, Silhouette Coefficient, Events retained, and Hybrid Index to help determine the appropriate number of clusters. 2) The average polygons of all the events in each cluster for the entire range of k-values to view for spatial coherence, and 3) Supplementary Figure 4 from the journal article.
 
+12. Event_Cluster_Assignment.py
+    		This script clusters events into regions across the CONUS (k-means clustering) based on the appropriate number of clusters determined in 11.Determine_Clusters.py. The script uses the largest areal overlap (intersection area) to assign events to clusters.
+
 # Supplementary/Extra Files
 8.5. Make_Area_Plot.py
 	This file plots the distribution of all the areas calculated in 8.Area_Calculation for examination and shows where the chosen area threshold sits.   
