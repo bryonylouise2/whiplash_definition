@@ -1,5 +1,5 @@
 #########################################################################################
-## Examine and Plot Specific Events - Drought to Pluvial
+## Examine and create gifs of specific events - Drought to Pluvial
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 8th, 2025
 ## Input: Decadal SPI, whiplash occurrences, normalized density, and independent 
