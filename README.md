@@ -83,9 +83,15 @@ functions.py
    			Output: A PNG file of the temporal lag autocorrelation of SPI (CONUS averaged) 
 
 Ex
-			This script examines and creates gifs of specific drought-to-pluvial events
+			This script examines and creates GIFs of specific drought-to-pluvial events
 			Input: Decadal SPI, whiplash occurrences, normalized density, and independent drought-to-pluvial events CSV. Choose event number or date.
-			Output: gifs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
+			Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
+
+Ex. 
+				This script examines and creates GIFs of specific pluvial-to-drought events
+				Input: Decadal SPI, whiplash occurrences, normalized density, and independent pluvial-to-drought events CSV. Choose event number or date.
+				Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
+
 
 Ex.Number_of_Days_Between_NonIndependent_Events.py
 			This script to calculate and plot the days between non-independent dates within the database.
