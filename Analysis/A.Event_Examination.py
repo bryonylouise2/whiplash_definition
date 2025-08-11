@@ -2,8 +2,9 @@
 ## Examine and Plot Specific Events
 ## Bryony Louise Puxley
 ## Last Edited: Monday, August 11th, 2025
-## Input: 
-## Output: 
+## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+## Previously made SPI, whiplash occurrence, and normalized density files, 
+## Output: Two PNG files.   Figure 1 and Figure S1
 #########################################################################################
 # Import Required Modules
 #########################################################################################
@@ -26,10 +27,10 @@ import shapely.wkt
 import os
 
 #########################################################################################
-#Choose Precipitation Whiplash Type and run corresponding cell
+# Choose Precipitation Whiplash Type and run the corresponding cell
 #########################################################################################
 #########################################################################################
-#Drought-to-Pluvial
+# Drought-to-Pluvial
 #########################################################################################
 event_num =  486 # choose the event number for examination
 
@@ -38,7 +39,7 @@ events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
 df = events_DP.copy()
 
 #########################################################################################
-#Pluvial-to-Drought
+# Pluvial-to-Drought
 #########################################################################################
 event_num =  715 # choose the event number for examination
 
@@ -47,7 +48,8 @@ events_PD = pd.read_csv('/data2/bpuxley/Events/independent_events_PD.csv')
 df = events_PD.copy()
 
 #########################################################################################
-#Import all other necessary data - load previously made spi, whiplash identification and normalized density files
+# Import all other necessary data - load previously made SPI, whiplash identification, and 
+# normalized density files
 #########################################################################################
 years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
 			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
@@ -88,14 +90,13 @@ for i in years:
 
 density = xr.open_mfdataset(pathfiles, combine='by_coords')
 
-
 print('Read in Data')
 
 #Lons, lats
 lons, lats = np.meshgrid(whiplashes.lon.values, whiplashes.lat.values) #create a meshgrid of lat,lon values
 
 #########################################################################################
-#Create CONUS mask
+# Create CONUS mask
 #########################################################################################
 usa = gpd.read_file("https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_state_20m.zip")
 lower_48 = usa[~usa["STUSPS"].isin(["AK", "HI", "PR"])]
@@ -113,7 +114,7 @@ for i in tqdm(range(lons.shape[0])):
         mask[i, j] = lower_48_geom.contains(point)  # True if inside, False if outside
 
 ##########################################################################################
-#Subset and Isolate Event
+# Subset and Isolate Event
 ##########################################################################################
 #subset based on event_no
 subset_ind = np.where((df.Event_No == event_num))[0]
@@ -130,10 +131,10 @@ whiplash_dates = event[third_column]
 event_len = len(event)
 
 ##########################################################################################
-#Plot the event - choose correct whiplash type
+# Plot the event - choose the correct whiplash type
 ##########################################################################################
 ##########################################################################################
-##DROUGHT TO PLUVIAL
+## DROUGHT TO PLUVIAL
 ##########################################################################################
 day_num = 0 #day within the event for examination
 
@@ -168,7 +169,7 @@ cs1 = plt.contourf(lons, lats, spi_drought_masked, transform=ccrs.PlateCarree(),
 
 fig.colorbar(cs1, ax=ax1, orientation='horizontal', pad=0.05)
 
-plt.title("a) SPI CONUS Drought \nDate: %s"%(drought_date), loc = "left")
+plt.title("a) SPI CONUS \nDate: %s"%(drought_date), loc = "left")
 plt.title("Event No: %s\nDay No: %s"%(event_num, day_num), loc = 'right')
 
 # Second subplot of SPI pluvial values (CONUS)
@@ -187,7 +188,7 @@ cs2 = plt.contourf(lons, lats, spi_pluvial_masked, transform=ccrs.PlateCarree(),
 
 fig.colorbar(cs2, ax=ax2, orientation='horizontal', pad=0.05)
 
-plt.title("b) SPI CONUS Pluvial \nDate: %s"%(pluvial_date), loc = "left")
+plt.title("b) SPI CONUS \nDate: %s"%(pluvial_date), loc = "left")
 plt.title("Event No: %s\nDay No: %s"%(event_num, day_num), loc = 'right')
 
 #Third subplot of whiplash locations (CONUS)
@@ -236,7 +237,7 @@ plt.title("Event No: %s\nDay No: %s"%(event_num, day_num), loc = 'right')
 plt.savefig('/home/bpuxley/Definition_and_Climatology/Plots/Events_Drought_to_Pluvial/event_%s_%s.png'%(event_num,day_num), bbox_inches = 'tight', pad_inches = 0.1)    
  
 ##########################################################################################
-##PLUVIAL TO DROUGHT
+## PLUVIAL TO DROUGHT
 ##########################################################################################
 day_num = 0 #day within the event for examination
 
@@ -271,7 +272,7 @@ cs1 = plt.contourf(lons, lats, spi_pluvial_masked, transform=ccrs.PlateCarree(),
 
 fig.colorbar(cs1, ax=ax1, orientation='horizontal', pad=0.05)
 
-plt.title("a) SPI CONUS Pluvial \nDate: %s"%(pluvial_date), loc = "left")
+plt.title("a) SPI CONUS \nDate: %s"%(pluvial_date), loc = "left")
 plt.title("Event No: %s\nDay No: %s"%(event_num, day_num), loc = 'right')
 
 # Second subplot of SPI pluvial values (CONUS)
@@ -290,7 +291,7 @@ cs2 = plt.contourf(lons, lats, spi_drought_masked, transform=ccrs.PlateCarree(),
 
 fig.colorbar(cs2, ax=ax2, orientation='horizontal', pad=0.05)
 
-plt.title("b) SPI CONUS Drought \nDate: %s"%(drought_date), loc = "left")
+plt.title("b) SPI CONUS \nDate: %s"%(drought_date), loc = "left")
 plt.title("Event No: %s\nDay No: %s"%(event_num, day_num), loc = 'right')
 
 #Third subplot of whiplash locations (CONUS)
