@@ -2,9 +2,11 @@
 ## A script to calculate the frequency of events throughout the timeframe
 ## as well as seasonally throughout the year
 ## Bryony Louise
-## Last Edited: Friday February 26th 2025 
+## Last Edited: Monday, August 11th, 2025 
+## Input:
+## Output: 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -26,12 +28,12 @@ import shapely.wkt
 import os
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Import Events - load previously made event files
+# Import Events - load previously made event files
 #########################################################################################
 events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
 events_PD = pd.read_csv('/data2/bpuxley/Events/independent_events_PD.csv')
