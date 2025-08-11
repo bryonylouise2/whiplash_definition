@@ -1,9 +1,9 @@
 #########################################################################################
 ## A script to examine the intensity of whiplash events
 ## Bryony Louise Puxley
-## Last Edited: Monday, August 11th 2025 
-## Input:
-## Output: 
+## Last Edited: Monday, August 11th, 2025 
+## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+## Output: A scatter plot (PNG) of average SPI change vs maximum grid point SPI change.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
@@ -49,7 +49,6 @@ years = np.arange(1915,2021,1)
 #########################################################################################
 # Calculate the area-averaged SPI change and the maximum grid point SPI change for each event
 #########################################################################################
-
 def intensity(df):
 	max_spi_change = []
 	avg_spi_change = []
@@ -130,8 +129,6 @@ intensity_pd['Avg_SPI_Change_bins'] = pd.cut(intensity_pd['Avg_SPI_Change'], bin
 intensity_averages_DP = pd.DataFrame({'Intensity_bins': bin_labels, 'Time_Before': intensity_dp.groupby('Avg_SPI_Change_bins')['Time_Before'].mean().reset_index(drop=True), 'Time_After': intensity_dp.groupby('Avg_SPI_Change_bins')['Time_After'].mean().reset_index(drop=True)})
 intensity_averages_PD = pd.DataFrame({'Intensity_bins': bin_labels, 'Time_Before': intensity_pd.groupby('Avg_SPI_Change_bins')['Time_Before'].mean().reset_index(drop=True), 'Time_After': intensity_pd.groupby('Avg_SPI_Change_bins')['Time_After'].mean().reset_index(drop=True)})
 
-
-
 #########################################################################################
 # Plot a scatter plot of Avg SPI Change vs Max SPI Change
 #########################################################################################
@@ -196,7 +193,7 @@ ax2 = fig.add_subplot(122)
 
 plt.scatter(intensity_pd.Avg_SPI_Change, intensity_pd.Max_SPI_Change, s=1, c=colors_PD, alpha=0.8,cmap=cmap,vmin=vmin,vmax=vmax)
 
-for key,value in cluster_averages_PD.items():
+for key, value in cluster_averages_PD.items():
 	plt.plot(value[0], value[1], '*', color=next(colors), markersize=13, markeredgecolor='k', label=key)
 
 
