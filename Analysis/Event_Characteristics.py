@@ -5,7 +5,7 @@
 ##### On what "day" does the largest SPI change max occur?
 ## Bryony Louise Puxley
 ## Last Edited: Monday, August 11th, 2025 
-## Input: 
+## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
 ## Output: A PNG file of on what "day" does the largest area, the largest area-averaged 
 ## and max SPI change.  
 #########################################################################################
