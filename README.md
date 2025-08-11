@@ -94,8 +94,17 @@ Ex.CaseStudyAnalysis_PD.py
 
 
 Ex.Number_of_Days_Between_NonIndependent_Events.py
-			This script to calculate and plot the days between non-independent dates within the database.
+			This script calculates and plots the days between non-independent dates within the database.
 			Input: Subsetted by area event file from 9. Database_Creation.py
    			Output: A histogram of a) the number of days between drought-to-pluvial and b) pluvial-to-drought events.
+
+Ex.Event_Characteristics.py
+			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+			Output: A PNG file of on what "day" does the largest area, the largest area-averaged, and max SPI change.  
+
  
+# Analysis Files
+
+
 
