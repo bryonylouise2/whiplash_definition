@@ -1,6 +1,6 @@
 #########################################################################################
 ## A script to calculate the frequency of events throughout the timeframe, as well as 
-## seasonally throughout the year/
+## seasonally throughout the year.
 ## Bryony Louise Puxley
 ## Last Edited: Monday, August 11th, 2025 
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. 
