@@ -3,10 +3,13 @@
 ##### On what "day" does the largest area occur?
 ##### On what "day" does the largest SPI change area average occur?
 ##### On what "day" does the largest SPI change max occur?
-## Bryony Louise
-## Last Edited: Monday February 10th 2025 
+## Bryony Louise Puxley
+## Last Edited: Monday, August 11th, 2025 
+## Input: 
+## Output: A PNG file of on what "day" does the largest area, the largest area-averaged 
+## and max SPI change.  
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -27,24 +30,24 @@ import shapely.wkt
 import os
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
 #########################################################################################
-#Import Events - load previously made event files
+# Import Events - load previously made event files
 #########################################################################################
 events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
 events_PD = pd.read_csv('/data2/bpuxley/Events/independent_events_PD.csv')
 
 #########################################################################################
-#Call either Drought-to-Pluvial events or Pluvial-to-Drought Events
+# Call either Drought-to-Pluvial events or Pluvial-to-Drought Events
 #########################################################################################
 save_name = 'events_DP'
 df = events_DP.copy()
 
 #########################################################################################
-#Analysis
+# Analysis
 #########################################################################################
 day_largest_area = []
 day_largest_spi_area = []
@@ -61,14 +64,14 @@ for i in tqdm(range(0, no_of_events)):
 	day_largest_spi_max.append(subset.Day_No[subset['Max_SPI_Change'].idxmax()])
 	
 #########################################################################################
-#Histograms For Plotting
+# Histograms For Plotting
 #########################################################################################
 hist_area = np.histogram(day_largest_area, bins=np.arange(0,22,1))
 hist_spi_avg = np.histogram(day_largest_spi_area, bins=np.arange(0,22,1))
 hist_spi_max = np.histogram(day_largest_spi_max, bins=np.arange(0,22,1))
 
 #########################################################################################
-#Plot
+# Plot
 #########################################################################################
 fig = plt.figure(figsize = (10,6), dpi = 300, tight_layout =True)
 
