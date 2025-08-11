@@ -110,6 +110,10 @@ A.Event_Climatology.py
 			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought, and Pluvial events.
 			Output: Two PNG files. Figure 5 from the journal article: grid point frequency for the period 1915-2020 for a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events. Figure 6 from the journal article: The most common season that a grid point experiences a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events.
 
+A.Event_Examination.py
+			This script examines and plots specific events.
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. Previously made SPI, whiplash occurrence, and normalized density files, 
+			Output: Two PNG files. Figure 1 from the journal article: 30-day SPI during (a) the drought period, and (b) the following pluvial period. (c) Points flagged as having a whiplash event as per our definition (see the text for details). (d) Full KDE normalized density field using the Epanechnikov kernel and 0.02 bandwidth. In red on all subplots, the event polygon is drawn using the 0.4878 contour. Figure S1 from the journal article: the same for pluvial-to-drought.
 
 
 
