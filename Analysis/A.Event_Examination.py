@@ -4,7 +4,13 @@
 ## Last Edited: Monday, August 11th, 2025
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
 ## Previously made SPI, whiplash occurrence, and normalized density files, 
-## Output: Two PNG files.   Figure 1 and Figure S1
+## Output: Two PNG files. Figure 1 from the journal article: 30-day SPI during (a) a drought 
+## period between December 18th, 1955, and January 16th, 1956, and (b) the following pluvial 
+## period between January 17th and February 16th, 1956. (c) Points flagged as having a whiplash 
+## event as per our definition (see the text for details). (d) Full KDE normalized density 
+## field using the Epanechnikov kernel and 0.02 bandwidth. In red on all subplots, the event 
+## polygon is drawn using the 0.4878 contour. Figure S1 from the journal article: the same for
+## pluvial-to-drought.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
