@@ -115,5 +115,8 @@ A.Event_Examination.py
 			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. Previously made SPI, whiplash occurrence, and normalized density files, 
 			Output: Two PNG files. Figure 1 from the journal article: 30-day SPI during (a) the drought period, and (b) the following pluvial period. (c) Points flagged as having a whiplash event as per our definition (see the text for details). (d) Full KDE normalized density field using the Epanechnikov kernel and 0.02 bandwidth. In red on all subplots, the event polygon is drawn using the 0.4878 contour. Figure S1 from the journal article: the same for pluvial-to-drought.
 
-
+A.Event_Intensity.py
+			This script examines the intensity of whiplash events.
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+			Output: A scatter plot (PNG) of average SPI change vs maximum grid point SPI change.
 
