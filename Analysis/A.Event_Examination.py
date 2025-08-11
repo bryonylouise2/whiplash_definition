@@ -1,9 +1,11 @@
 #########################################################################################
 ## Examine and Plot Specific Events
-## Bryony Louise
-## Last Edited: Tuesday February 18th 2025
+## Bryony Louise Puxley
+## Last Edited: Monday, August 11th, 2025
+## Input: 
+## Output: 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
