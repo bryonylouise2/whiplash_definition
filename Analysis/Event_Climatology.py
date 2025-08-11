@@ -1,11 +1,13 @@
 #########################################################################################
 ## A script to create a map of the event climatology across the CONUS
-## i.e. total number of times that a grid point is within an extreme-event polygon 
+## i.e., total number of times that a grid point is within an extreme-event polygon 
 ## over the period 1915-2020
 ## Bryony Louise
-## Last Edited: Friday February 26th 2025 
+## Last Edited: Monday, August 11th, 2025 
+## Input:
+## Output: 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -30,7 +32,7 @@ from shapely.ops import unary_union
 import geopandas as gpd
 
 #########################################################################################
-#Import Functions
+# Import Functions
 #########################################################################################
 import functions
 
@@ -43,7 +45,7 @@ def event_mask(lons, lats, polygon):
 	return masked_array_filled
 
 #########################################################################################
-#Import Events - load previously made event files
+# Import Events - load previously made event files
 #########################################################################################
 events_DP = pd.read_csv('/data2/bpuxley/Events/independent_events_DP.csv')
 events_PD = pd.read_csv('/data2/bpuxley/Events/independent_events_PD.csv')
@@ -52,7 +54,7 @@ df_DP = events_DP.copy()
 df_PD = events_PD.copy()
 
 #########################################################################################
-#Create a lat, lon grid
+# Create a lat, lon grid
 #########################################################################################
 lat = np.arange(25.15625, 50.03125, 0.0625)
 lon = np.arange(235.40625, 293.03125, 0.0625) 
@@ -61,13 +63,13 @@ lons, lats = np.meshgrid(lon,lat) #Livneh Grid
 o,p = lats.shape
 
 #########################################################################################
-#Polygons
+# Polygons
 #########################################################################################
 polygons_DP = [shapely.wkt.loads(i) for i in df_DP.geometry] #convert from nasty string of lat,lons to geometry object
 polygons_PD = [shapely.wkt.loads(i) for i in df_PD.geometry] #convert from nasty string of lat,lons to geometry object
 
 #########################################################################################
-#Calculate the total number of times that a grid point is within an event polygon
+# Calculate the total number of times that a grid point is within an event polygon
 #########################################################################################
 #Drought-to-Pluvial
 event_freq_DP = np.zeros((lats.shape[0], lons.shape[1]))
@@ -87,7 +89,7 @@ for i,(poly) in tqdm(enumerate(polygons_PD)):
 	
 
 #########################################################################################
-#Calculate the most common month of an event at each grid point
+# Calculate the most common month of an event at each grid point
 #########################################################################################
 #create a new column in the dataframe that holds the coordinate couples of the polygons
 
@@ -149,7 +151,7 @@ dataset.to_netcdf('/home/bpuxley/most_common_month.nc')
 print('file saved')
 
 #########################################################################################
-#Create CONUS mask
+# Create CONUS mask
 #########################################################################################
 usa = gpd.read_file("https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_state_20m.zip")
 lower_48 = usa[~usa["STUSPS"].isin(["AK", "HI", "PR"])]
@@ -171,7 +173,7 @@ event_freq_pd_masked = np.where(mask, event_freq_PD, np.nan)  # Set values outsi
 
 
 #########################################################################################
-#Plot
+# Plot
 #########################################################################################
 fig = plt.figure(figsize = (10,6), dpi = 300, tight_layout =True)
 proj = ccrs.PlateCarree()
