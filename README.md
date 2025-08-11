@@ -105,6 +105,11 @@ Ex.Event_Characteristics.py
 
  
 # Analysis Files
+A.Event_Climatology.py
+			This script creates a map of the event climatology across the CONUS i.e., total number of times and the most common month that a grid point is within an extreme-event polygon over the period 1915-2020
+			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought, and Pluvial events.
+			Output: Two PNG files. Figure 5 from the journal article: grid point frequency for the period 1915-2020 for a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events. Figure 6 from the journal article: The most common season that a grid point experiences a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events.
+
 
 
 
