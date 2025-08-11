@@ -101,12 +101,12 @@ Ex.Number_of_Days_Between_NonIndependent_Events.py
 Ex.Event_Characteristics.py
 			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
 			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
-			Output: A PNG file of on what "day" does the largest area, the largest area-averaged, and max SPI change.  
+			Output: A PNG file of on what "day" does the largest area, the largest area-averaged, and the max SPI change.  
 
  
 # Analysis Files
 A.Event_Climatology.py
-			This script creates a map of the event climatology across the CONUS i.e., total number of times and the most common month that a grid point is within an extreme-event polygon over the period 1915-2020
+			This script creates a map of the event climatology across the CONUS, i.e., the total number of times and the most common month that a grid point is within an extreme-event polygon over the period 1915-2020
 			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought, and Pluvial events.
 			Output: Two PNG files. Figure 5 from the journal article: grid point frequency for the period 1915-2020 for a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events. Figure 6 from the journal article: The most common season that a grid point experiences a) drought-to-pluvial, b) pluvial-to-drought, c) drought, and d) pluvial events.
 
