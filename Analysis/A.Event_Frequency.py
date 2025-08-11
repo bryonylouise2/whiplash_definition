@@ -1,11 +1,16 @@
 #########################################################################################
-## A script to calculate the frequency of events throughout the timeframe
-## as well as seasonally throughout the year
-## Bryony Louise
+## A script to calculate the frequency of events throughout the timeframe, as well as 
+## seasonally throughout the year/
+## Bryony Louise Puxley
 ## Last Edited: Monday, August 11th, 2025 
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. 
 ## ENSO (Oceanic Niño Index-ONI) data. 
-## Output: 
+## Output: PNG files. 1) Plot of the yearly ENSO - ONI Index from 1915 to 2020. 
+## 2) The yearly frequency of the events; the average areal size; and the total area 
+## impacted from 1915 to 2020 (individually). 3) the monthly frequency of the events, and 
+## the monthly average areal size. 4) The trends on each half of the database. 5) The yearly 
+## frequency of the events; the average areal size; and the total area impacted from 1915 to 
+## 2020 (one plot).
 #########################################################################################
 # Import Required Modules
 #########################################################################################
@@ -57,7 +62,7 @@ enso_oni =  pd.read_csv('/data2/bpuxley/ENSO/ENSO_ONI.csv')
 #enso_oni['enso_phase'] = enso_oni['ONI'].apply(functions.categorize_enso_strength)
 
 #Define ENSO Years
-# Events are defined as 5 consecutive overlapping 3-month periods at or above the +0.5 anomaly 
+# Events are defined as five consecutive overlapping 3-month periods at or above the +0.5 anomaly 
 #for warm (El Niño) events and at or below the -0.5 anomaly for cool (La Niña) events.
 
 enso_oni['phase'] = 0
@@ -358,7 +363,6 @@ plt.savefig('/home/bpuxley/Definition_and_Climatology/Plots/enso_avg_1915_2020.p
 categories = ['freq', 'avg_size', 'total_area', 'avg_len'] # Define categories
 y_labels = {'freq': 'Number of Events', 'avg_size': 'Average Size of Event ($km^2$)', 'total_area':'Total Area Impacted ($km^2$)', 'avg_len':'Average Length of Event (Days)'}
 y_ticks = {'freq': np.arange(0, 28, 2), 'avg_size': np.arange(0, 550000, 50000), 'total_area':np.arange(0, 8000000, 500000), 'avg_len':np.arange(0, 8, 1)}
-
 
 for cat in categories:
 	print(f"\nPlotting category: {cat}")
