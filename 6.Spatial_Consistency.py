@@ -49,8 +49,8 @@ for period in sorted(time_periods):
         ################################
         # Read in data
         ################################
-	filename = 'whiplashes_%s.nc'%(period)
-	pathfile = os.path.join(dirname, filename)
+		filename = 'whiplashes_%s.nc'%(period)
+		pathfile = os.path.join(dirname, filename)
         df = xr.open_dataset(pathfile)
         print('Read in Data')
 
@@ -64,7 +64,7 @@ for period in sorted(time_periods):
         DP_dataset = df.DP_whiplashes
         PD_dataset = df.PD_whiplashes
         
-	################################
+		################################
         # Determine Spatial Consistency
         ################################
         density_DP = np.zeros((m,o,p))
