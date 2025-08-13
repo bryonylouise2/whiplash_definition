@@ -1,7 +1,7 @@
 #########################################################################################
 ## Plot the distribution of all the areas 
 ## Bryony Louise Puxley
-## Last Edited: Monday, July 28th, 2025 
+## Last Edited: Wednesday, August 13th, 2025 
 ## Input: The CSV files of all potential events created in 8.Area_Calculation.py.
 ## Output: A PNG file of a 4-panel plot that includes a histogram of the frequency of 
 ## all areas, and a line plot of the percentiles relating to each area for both types
