@@ -103,13 +103,13 @@ for period in sorted(time_periods):
 	################################
 	#Save out the density file 
 	################################
-	time = drought_dataset.time
+	time_frame = drought_dataset.time
 	lats = drought_dataset.lat
 	lons = drought_dataset.lon
 
 	dimensions=['time','lat','lon']
 	coords = {
-				'time': time,
+				'time': time_frame,
                 'lat': lats,
                 'lon': lons
                 }
@@ -122,4 +122,3 @@ for period in sorted(time_periods):
 	print('density file saved')
                                                        
     print('Period: '+period+' completed')
-
