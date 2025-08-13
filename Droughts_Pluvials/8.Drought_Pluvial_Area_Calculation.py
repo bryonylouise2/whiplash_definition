@@ -33,3 +33,78 @@ import os
 #########################################################################################
 import functions
 
+#########################################################################################
+#Import Data
+#########################################################################################
+years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
+			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
+
+#Choose which file to look at
+data_slice = years[10] #choose which years to look at
+
+droughts_dirname= '/data2/bpuxley/droughts_and_pluvials/density/density_droughts_%s.nc'%(data_slice)
+pluvials_dirname= '/data2/bpuxley/droughts_and_pluvials/density/density_pluvials_%s.nc'%(data_slice)
+
+drought_densities = (xr.open_dataset(droughts_dirname)).drought_density
+pluvial_densities = (xr.open_dataset(pluvials_dirname)).pluvial_density
+
+m,o,p = drought_densities.shape
+dates = drought_densities.time.values
+
+grid_lons = drought_densities.lon.values
+grid_lats = drought_densities.lat.values
+
+print('Read in Data')
+#########################################################################################
+#Calculate the area of all polygons
+#########################################################################################
+ISOPLETH_DROUGHT = 0.8921 #the 99th percentile of all DP density fields
+ISOPLETH_PLUVIAL = 0.8997 #the 99th percentile of all PD density fields
+
+#Droughts
+areas_droughts = []
+polys_droughts = []
+kept_dates_droughts = []
+
+for i in tqdm(range(0,m)): #loop through the timeseries
+  drought_field = drought_densities[i,:,:].values
+	if np.any(drought_field):  #only run code if at least one of the values is 1
+            a, p = functions.calc_area(grid_lons, grid_lats, drought_field,
+                                     isopleth=ISOPLETH_DROUGHT, area_threshold=0)
+            areas_droughts.extend(a)
+            polys_droughts.extend(p)
+            kept_dates_droughts.extend([dates[i]] * len(a))
+
+data_for_file_droughts = {
+    'Drought_Date': pd.DatetimeIndex([i - pd.DateOffset(days=29) for i in kept_dates_droughts]),
+    'Area': areas_droughts,
+    'geometry': polys_droughts 
+    }
+
+df_droughts = pd.DataFrame(data_for_file_droughts)
+df_droughts.to_csv(f'/data2/bpuxley/droughts_and_pluvials/Databases/potential_events_droughts_%s.csv'%(data_slice), index=False)
+
+
+#Pluvials
+areas_pluvials = []
+polys_pluvials = []
+kept_dates_pluvials = []
+
+for i in tqdm(range(0,m)): #loop through the timeseries
+	pluvial_field = pluvial_densities[i,:,:].values
+	if np.any(pluvial_field):  #only run code if at least one of the values is 1
+            a, p = functions.calc_area(grid_lons, grid_lats, pluvial_field,
+                                     isopleth=ISOPLETH_PLUVIAL, area_threshold=0)
+            areas_pluvials.extend(a)
+            polys_pluvials.extend(p)
+            kept_dates_pluvials.extend([dates[i]] * len(a))
+
+data_for_file_pd = {
+    'Pluvial_Date': pd.DatetimeIndex([i - pd.DateOffset(days=29) for i in kept_dates_pluvials]),
+    'Area': areas_pluvials,
+    'geometry': polys_pluvials 
+    }
+
+df_pd = pd.DataFrame(data_for_file_pd)
+df_pd.to_csv(f'/data2/bpuxley/droughts_and_pluvials/Databases/potential_events_pluvials_%s.csv'%(data_slice), index=False)
+
