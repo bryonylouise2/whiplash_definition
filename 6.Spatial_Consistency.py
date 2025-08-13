@@ -41,17 +41,16 @@ time_periods = {'1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964',
 #Whiplash Points from 5.Convert_regional_whiplash_data_into_decadal_periods.py
 dirname= '/scratch/bpuxley/Whiplash'
 
-pathfiles = []
-
 for period in sorted(time_periods):
-	print(period)
+		print(period)
 
         ################################
         # Read in data
         ################################
 		filename = 'whiplashes_%s.nc'%(period)
 		pathfile = os.path.join(dirname, filename)
-        df = xr.open_dataset(pathfile)
+        
+		df = xr.open_dataset(pathfile)
         print('Read in Data')
 
         m,o,p = len(df.time), len(df.lat), len(df.lon) #length of data #mo,o,p: time, lat, lon 
@@ -72,7 +71,7 @@ for period in sorted(time_periods):
 
         start=time.time()
         print('Drought-to-Pluvial: Started')
-        for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series, turn 0 to 2,9 and when looking at the end of the series, turn m to m-30 (first and last 30 values will be all nans)
+        for i in tqdm(range(0, m)): #loop through the timeseries: when looking at the beginning of the time series, turn 0 to 29, and when looking at the end of the series, turn m to m-30 (first and last 30 values will be all nans)
                 DP_field = DP_dataset[i,:,:].values
                 if np.any(~np.isnan(DP_field)): #only run KDE code if at least one of the values is 1
                         density_DP[i, :, :] = functions.kde(orig_lon=DP_dataset.lon.values,
