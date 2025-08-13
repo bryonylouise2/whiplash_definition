@@ -2,7 +2,7 @@
 ## Script to combine the multiple density.nc files into one file and calculate the 99th 
 ## percentile for polygons.
 ## Bryony Louise Puxley
-## Last Edited: Monday, July 28th, 2025 
+## Last Edited: Wednesday, August 13th, 2025 
 ## Input: decadal density files for drought and pluvial events.
 ## Output: The 99th percentile of densities for drought and pluvial events to be used to 
 ## draw the single contour for the polygon outlining the area defined as having a whiplash
