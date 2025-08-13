@@ -1,7 +1,13 @@
-#########################################################################################
-## Create the databases of precipitation whiplash events
+########################################################################################
+## This script creates the databases of all of the drought and pluvial events, subsetting 
+## by areal threshold (can be set to zero to keep all events) and also calculates relevant 
+## statistics such as: the area-averaged SPI during the 30-day drought/pluvial period, the 
+## the grid point magnitude maximum SPI during the 30-day drought/pluvial periods, respectively.
 ## Bryony Louise Puxley
-## Last Edited: Wedne February 6th 2025 
+## Last Edited: Wednesday, August 13th, 2025 
+## Input: Decadal SPI files, decadal drought/pluvial files, decadal density/KDE files, and decadal 
+## potential events CSV files.
+## Output: Two CSV files of drought and pluvial events.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -29,12 +35,12 @@ import os
 import functions
 
 #########################################################################################
-#Set Area Threshhold
+#Set Area Threshold
 #########################################################################################
 AREA = 0
 
 #########################################################################################
-#Import Data - load previously made spi, whiplash identification and potential events files
+#Import Data - load previously made SPI, whiplash identification, and potential events files
 #########################################################################################
 years = ['1915_1924', '1925_1934', '1935_1944', '1945_1954', '1955_1964', '1965_1974', 
 			'1975_1984', '1985_1994', '1995_2004', '2005_2014', '2015_2020']
@@ -100,7 +106,6 @@ potential_events_pluvials = potential_events_pluvials[potential_events_pluvials[
 polygons_droughts = [shapely.wkt.loads(i) for i in potential_events_droughts.geometry] #convert from nasty string of lat,lons to geometry object
 polygons_pluvials = [shapely.wkt.loads(i) for i in potential_events_pluvials.geometry] #convert from nasty string of lat,lons to geometry object
 
-
 #########################################################################################
 #Calculate Relevant Statistics
 #########################################################################################
@@ -160,7 +165,7 @@ pluvial_chunk.to_csv(f'/data2/bpuxley/droughts_and_pluvials/Events/events_pluvia
 print('saved Pluvial events')
 
 #########################################################################################
-#Read in all chunks, combine into 1 csv each and save
+#Read in all chunks, combine into 1 CSV each, and save
 #########################################################################################
 filenames = ['0_1999','2000_3999','4000_4999','5000_5999','6000_6999','7000_end']
 dirname= '/data2/bpuxley/droughts_and_pluvials/Events/'
