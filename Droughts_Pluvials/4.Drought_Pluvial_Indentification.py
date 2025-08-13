@@ -32,9 +32,8 @@ import gzip
 import functions 
 
 #########################################################################################
-# Regions For Analysis
+#Identify occurrences of drought and pluvial events
 #########################################################################################
-#Choose Region
 regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 
 regions_info = {"WCN": {'lon':[235,241], 'lat':[40,50]}, #west coast north
@@ -50,14 +49,15 @@ regions_info = {"WCN": {'lon':[235,241], 'lat':[40,50]}, #west coast north
 				"SNE": {'lon':[279,295], 'lat':[43,50]}, #southern north east
 				"WSE": {'lon':[265,275], 'lat':[25,36]}, #western south east
 				"ESE": {'lon':[275,286], 'lat':[25,36]}} #eastern south east
-
+			
 for region in sorted(regions):
-  print(region)
+	print(region)
 	
 	################################################################################################
 	# import data
 	################################################################################################
-	filename = 'SPI30_%s.nc'%(region)
+	window = 30 #choose from 60-, 90-, or 180
+	filename = 'SPI_%s_%s.nc'%(window, region)
 	dirname= '/data2/bpuxley/SPI_30day/regional_data'
 
 	pathfile = os.path.join(dirname, filename)
@@ -72,10 +72,44 @@ for region in sorted(regions):
 	print('Lat: '+ str(o))
 	print('Lon: '+ str(p))
 
+	'''
 	################################################################################################
-	# Loop through each grid point and identify occurrences of droughts and pluvials
+	# Loop through each grid point and identify occurrences of ALL droughts and pluvials
 	################################################################################################
-	# Droughts are when the 30-day SPI is less than -1, and Pluvials are when the 30-day SPI 
+	# Droughts are when the 30-day SPI is less than -1 and Pluvials are when the 30-day SPI 
+	# is greater than +1
+	################################################################################################
+	spi = df_spi.spi_30_day #create variable spi which contains the spi data from the data array
+	del(df_spi)
+
+	binary_array_drought = np.zeros((m,o,p))*np.nan #create an array to store the binary array of drought occurrences
+	binary_array_pluvial = np.zeros((m,o,p))*np.nan #create an array to store the binary array of pluvial occurrences
+
+	#Loop through all days and identify the grid points that experience events 
+	print('Starting loop to identify events')
+	for i in tqdm(range(window-1, m-window)):
+	#i.e, for rolling 30-day periods; 
+	## loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
+	#Look for DP events by comparing the SPI value at day i to the SPI value at day i+30
+	#day i is the 30 day SPI from day i-30 to day i; day i+30 is the 30 day SPI from day i to day i+30
+	#If a window of 60-,90-, or 180- days was chosen, just replace 30 with that value
+	
+		#drought events
+		bool_array = xr.where((spi[i].values <= -1),True,False) #find all the grid points that experience a drought event
+		binary_array_drought[i,:,:] = bool_array
+	
+		#pluvial events
+		bool_array = xr.where((spi[i].values >= +1),True,False) #find all the grid points that experience a pluvial event
+		binary_array_pluvial[i,:,:] = bool_array
+
+	print('events identifited')
+	
+	'''
+	################################################################################################
+	# OR Loop through each grid point and identify occurrences of droughts and pluvials with either
+	# dry/wet or normal conditions prior i.e. no whiplash events.
+	################################################################################################
+	# Droughts are when the 30-day SPI is less than -1 and Pluvials are when the 30-day SPI 
 	# is greater than +1
 	################################################################################################
 	spi = df_spi.spi_30day #create variable spi which contains the spi data from the data array
@@ -86,15 +120,19 @@ for region in sorted(regions):
 
 	#Loop through all days and identify the grid points that experience events 
 	print('Starting loop to identify events')
-	for i in tqdm(range(29, m-30)): #loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
+	for i in tqdm(range(window-1, m-window)):
+	#i.e, for rolling 30-day periods; 
+	## loop through the timeseries from value 29 (first 30 values will be all nans) up until the last 30 days
+	#Look for DP events by comparing the SPI value at day i to the SPI value at day i+30
 	#day i is the 30 day SPI from day i-30 to day i; day i+30 is the 30 day SPI from day i to day i+30
+	#If a window of 60-,90-, or 180- days was chosen, just replace 30 with that value
 	
 		#drought events
-		bool_array = xr.where((spi[i].values <= -1),True,False) #find all the grid points that experience a drought event
+		bool_array = xr.where((spi[i+window].values <= -1) & (spi[i].values < +1),True,False) #find all the grid points that experience a drought event that was either dry or normal before. No pluvial-to-drought.
 		binary_array_drought[i,:,:] = bool_array
-	
+		
 		#pluvial events
-		bool_array = xr.where((spi[i].values >= +1),True,False) #find all the grid points that experience a pluvial event
+		bool_array = xr.where((spi[i+window].values >= +1) & (spi[i].values > -1),True,False) #find all the grid points that experience a pluvial event that was either wet or normal before. No drought-to-pluvial.
 		binary_array_pluvial[i,:,:] = bool_array
 
 	print('events identifited')
@@ -106,7 +144,7 @@ for region in sorted(regions):
 	lats = spi.lat
 	lons = spi.lon
 
-	dimensions=['time', 'lat', 'lon']
+	dimensions=['time','lat','lon']
 	coords = {
 			'time': time,
 			'lat': lats,
