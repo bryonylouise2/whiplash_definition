@@ -3,8 +3,7 @@
 ## Bryony Louise Puxley
 ## Last Edited: Wednesday, August 13th, 2025 
 ## Input: Subsetted by area event file from 9. Database_Creation.py
-## Output: A CSV file of either independent drought-to-pluvial or independent 
-## pluvial-to-drought events.
+## Output: A CSV file of either independent drought or independent pluvial events.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
