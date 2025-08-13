@@ -1,14 +1,16 @@
 #########################################################################################
 ## An objective post-processing algorithm to group "repeat" events,
 ## Bryony Louise Puxley
-## Last Edited: Monday, February 10th 2025 
+## Last Edited: Wednesday, August 13th, 2025 
+## Input: Subsetted by area event file from 9. Database_Creation.py
+## Output: A CSV file of either independent drought-to-pluvial or independent 
+## pluvial-to-drought events.
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
 import xarray as xr
-import dask
 from tqdm import tqdm
 import time
 from datetime import datetime, timedelta, date
@@ -17,9 +19,6 @@ import pandas as pd
 import scipy.stats as scs
 import shapely.wkt
 import os
-
-pd.options.mode.chained_assignment = None  # default='warn'
-
 #########################################################################################
 #Import Functions
 #########################################################################################
