@@ -12,4 +12,4 @@
 #SBATCH --chdir=/home/bpuxley
 #
 #################################################
-python -u /home/bpuxley/spatial_consistency.py
+python -u /home/bpuxley/Spatial_Consistency.py
