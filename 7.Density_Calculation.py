@@ -31,13 +31,19 @@ dirname= '/data2/bpuxley/Density/*.nc'
 all_densities = xr.open_mfdataset(dirname, combine='by_coords')
 
 #Save file out
+#print('Saving all densities file')
 #all_densities.to_netcdf('/scratch/bpuxley/Density/density_1915_2020.nc')
+#print('File Saved')
 
 #Split into DP and PD
 DP_densities = all_densities.DP_density
 PD_densities = all_densities.PD_density
 
 #Calculate the 99th percentile of density files to draw the polygon
+print('calculating percentile')
 DP_perc = np.percentile(DP_densities, q=99)
+print('Drought-to-Pluvial calculated')
 PD_perc = np.percentile(PD_densities, q=99)
+print('Pluvial-to-Drought calculated')
+
 print(f'the 99th percentile for Drought-to-Pluvial Events is {DP_perc}, for Pluvial-to-Drought Events is {PD_perc}, and they were calculated at {datetime.now()}')
