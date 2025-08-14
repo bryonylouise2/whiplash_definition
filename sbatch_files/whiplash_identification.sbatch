@@ -12,4 +12,4 @@
 #SBATCH --chdir=/home/bpuxley
 #
 #################################################
-python -u /home/bpuxley/whiplash_identification.py
+python -u /home/bpuxley/Whiplash_Identification.py
