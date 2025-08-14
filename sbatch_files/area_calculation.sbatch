@@ -12,4 +12,4 @@
 #SBATCH --chdir=/home/bpuxley
 #
 #################################################
-python -u /home/bpuxley/area_calculation.py
+python -u /home/bpuxley/Area_Calculation.py
