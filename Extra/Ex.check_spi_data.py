@@ -25,7 +25,7 @@ import os
 #Choose Region
 Region = "CONUS"
 
-Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "WSE", "ESE"}
+Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 
 region_lon = {"test":[258,258.2],
               "test2":[256,262],
