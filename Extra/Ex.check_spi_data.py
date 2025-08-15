@@ -2,6 +2,8 @@
 ## Check the SPI Data to make sure it makes sense
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15, 2025 
+## Input: Regional SPI files.
+## Output:
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -67,29 +69,19 @@ inputlat = region_lat[Region]
 #########################################################################################
 #Import Data - load in all files
 #########################################################################################
-dirname= '/scratch/bpuxley/SPI_30_day'
+window = 30 #change if calculated a different window
+Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
+
+dirname= '/scratch/bpuxley/SPI_30day'
 
 pathfiles = []
 for i in Regions:
-        filename = 'SPI_30_%s.nc'%(i)
+        filename = 'SPI_%_%s.nc'%(window,i)
         pathfile = os.path.join(dirname, filename)
         pathfiles.append(pathfile)
 
-
-#filename = 'SPI30_%s.nc'%(Region)
-
-#pathfile = os.path.join(dirname, filename)
-datasets = {}
-for file in pathfiles:
-        print(file)
-        name = file[33:36]
-        print(name)
-        datasets[f'df_spi_{name}'] = xr.open_dataset(file)
-
+datasets = [xr.open_dataset(f) for f in pathfiles]
 print('Read in Data')
-
-#Rename the datasets that don't perfectly align
-#datasets['df_spi_WC'] = datasets.pop('df_spi_WC.')
 
 #########################################################################################
 #Turn lats, lons to meshgrid and get them ready for plotting
