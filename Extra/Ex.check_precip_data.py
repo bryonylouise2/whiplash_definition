@@ -2,10 +2,10 @@
 ## A script to check the precipitation data to make sure it makes sense.
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15th, 2025
-## Input:
-## Output: 
+## Input: Precipitation Data
+## Output: A PNG of the annual average precipitation across the chosen region. 
 #########################################################################################
-#Import Required Modules
+# Import Required Modules
 #########################################################################################
 import xesmf as xe
 import numpy as np
@@ -22,7 +22,7 @@ import scipy.stats as scs
 import os
 
 #########################################################################################
-#Import Data
+# Import Data
 #########################################################################################
 filename = 'prec.1915_2020.nc'
 dirname= '/home/bpuxley'
@@ -33,7 +33,7 @@ df_precip = xr.open_dataset(pathfile)
 print('Read in Data')
 
 #########################################################################################
-#Regions For Analysis
+# Regions For Analysis
 #########################################################################################
 #Choose Region
 Region = "CONUS"
@@ -71,7 +71,7 @@ region_lat = {"test":[35.1,35.3],
 inputlon = region_lon[Region]
 inputlat = region_lat[Region]
 
-#slice the data to region of interest
+#slice the data to the region of interest
 prec_obs = df_precip.sel(lat=slice(inputlat[0], inputlat[1]), lon=slice(inputlon[0], inputlon[1]))
 m,o,p = len(prec_obs.time), len(prec_obs.lat), len(prec_obs.lon)
 lon, lat = np.meshgrid(prec_obs.lon.values, prec_obs.lat.values) #create a meshgrid of lat,lon values
@@ -82,7 +82,7 @@ print('Lat: '+ str(o))
 print('Lon: '+ str(p))
 
 #########################################################################################
-#Calculate the average precip over the time period at each grid point
+# Calculate the average precipitation over the time period at each grid point
 #########################################################################################
 precip = prec_obs.prec
 
@@ -95,7 +95,7 @@ precip_sum = np.nansum(precip,axis=0)
 precip_avg = precip_sum/105
 
 #########################################################################################
-#Plot the Precip data
+# Plot the precipitation data
 #########################################################################################
 #Calculate the average annual precipitation across the region
 fig = plt.figure(figsize = (6,7), dpi = 300, tight_layout =True)
