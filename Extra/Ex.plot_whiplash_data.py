@@ -2,8 +2,8 @@
 ## Plot the number of whiplash occurrences at each grid point throughout the timeframe
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15th, 2025 
-## Input: Regional whiplash occurence files.
-## Output:
+## Input: regional whiplash data
+## Output: A PNG of the number of whiplash occurrences throughout the period across the CONUS.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
