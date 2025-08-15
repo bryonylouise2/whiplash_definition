@@ -3,7 +3,7 @@
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15, 2025 
 ## Input: Regional SPI files.
-## Output:
+## Output: A PNG of the annual average SPI across the CONUS.
 #########################################################################################
 #Import Required Modules
 #########################################################################################
@@ -70,7 +70,6 @@ inputlat = region_lat[Region]
 #Import Data - load in all files
 #########################################################################################
 window = 30 #change if calculated a different window
-Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 
 dirname= '/scratch/bpuxley/SPI_30day'
 
@@ -100,9 +99,8 @@ lon_SNE, lat_SNE = np.meshgrid(datasets['df_spi_SNE'].lon.values, datasets['df_s
 lon_WSE, lat_WSE = np.meshgrid(datasets['df_spi_WSE'].lon.values, datasets['df_spi_WSE'].lat.values)
 lon_ESE, lat_ESE = np.meshgrid(datasets['df_spi_ESE'].lon.values, datasets['df_spi_ESE'].lat.values)
 
-
 #########################################################################################
-#Calculate the average SPI over the time period at each grid point
+#Calculate the average SPI over the period at each grid point
 #########################################################################################
 spi_avg = {}
 spi_max = {}
@@ -125,7 +123,7 @@ for key, dataset in datasets.items():
 #########################################################################################
 fig = plt.figure(figsize = (10,7), dpi = 300, tight_layout =True)
 
-# First subplot with the spi mean
+# First subplot with the SPI mean
 ax1 = fig.add_subplot(311, projection=ccrs.PlateCarree()) #ccrs.LambertConformal())
 
 ax1.add_feature(cfeature.COASTLINE)
