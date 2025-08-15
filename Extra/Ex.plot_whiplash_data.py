@@ -67,12 +67,15 @@ for i in Regions:
         filename = 'whiplashes_%s.nc'%(i)
         pathfile = os.path.join(dirname, filename)
         pathfiles.append(pathfile)
-
+  
+datasets = [xr.open_dataset(f) for f in pathfiles]
+print('Read in Data')
 
 #########################################################################################
 #Turn lats, lons to meshgrid and get them ready for plotting
 #########################################################################################
-#lon_WC, lat_WC = np.meshgrid(datasets['df_whiplash_WC'].lon.values, datasets['df_whiplash_WC'].lat.values)
+lon_WCN, lat_WCN = np.meshgrid(datasets['df_whiplash_WCN'].lon.values, datasets['df_whiplash_WCN'].lat.values)
+lon_WCS, lat_WCS = np.meshgrid(datasets['df_whiplash_WCS'].lon.values, datasets['df_whiplash_WCS'].lat.values)
 lon_MWN, lat_MWN = np.meshgrid(datasets['df_whiplash_MWN'].lon.values, datasets['df_whiplash_MWN'].lat.values)
 lon_MWC, lat_MWC = np.meshgrid(datasets['df_whiplash_MWC'].lon.values, datasets['df_whiplash_MWC'].lat.values)
 lon_MWS, lat_MWS = np.meshgrid(datasets['df_whiplash_MWS'].lon.values, datasets['df_whiplash_MWS'].lat.values)
