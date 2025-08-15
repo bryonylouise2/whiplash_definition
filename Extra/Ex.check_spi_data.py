@@ -29,9 +29,8 @@ Region = "CONUS"
 
 Regions = {"WCN", "WCS", "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "ESE", "WSE"}
 
-region_lon = {"test":[258,258.2],
-              "test2":[256,262],
-              "CONUS":[235,295],
+region_lon = {"test":[277,277.2],
+              "CONUS":[235,295], 
               "WCN":[235,241], #west coast north
               "WCS":[235,241], #west coast south
               "MWN":[241,255], #mountain west north
@@ -43,14 +42,13 @@ region_lon = {"test":[258,258.2],
               "SGL":[265,279], #southern great lakes
               "NNE":[279,295], #northern north east
               "SNE":[279,295], #southern north east
-              "WSE":[265,275], #western south east
-              "ESE":[275,295]} #eastern south east
+              "WSE":[265,279], #western south east
+              "ESE":[279,295]} #eastern south east
 
-region_lat = {"test":[35.1,35.3],
-              "test2":[34,38],
+region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
               "WCN":[40,50], #west coast north
-              "WCN":[25,40], #west coast south
+              "WCS":[25,40], #west coast south
               "MWN":[42,50], #mountain west north 
               "MWC":[33,42], #moutain west central
               "MWS":[25,33], #moutain west south              
