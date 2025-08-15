@@ -25,10 +25,10 @@ import os
 #Choose Region
 Regions = { "MWN", "MWC", "MWS", "NGP", "SGP", "NGL", "SGL", "NNE", "SNE", "WSE", "ESE"}
 
-region_lon = {"test":[258,258.2],
-              "test2":[256,262],
-              "CONUS":[235,295],
-              "WC":[235,241], #west coast
+region_lon = {"test":[277,277.2],
+              "CONUS":[235,295], 
+              "WCN":[235,241], #west coast north
+              "WCS":[235,241], #west coast south
               "MWN":[241,255], #mountain west north
               "MWC":[241,255], #moutain west central
               "MWS":[241,255], #mountain west south
@@ -41,10 +41,10 @@ region_lon = {"test":[258,258.2],
               "WSE":[265,279], #western south east
               "ESE":[279,295]} #eastern south east
 
-region_lat = {"test":[35.1,35.3],
-              "test2":[34,38],
+region_lat = {"test":[35.1,35.3], 
               "CONUS":[25,50],
-              "WC":[30,50], #west coast
+              "WCN":[40,50], #west coast north
+              "WCS":[25,40], #west coast south
               "MWN":[42,50], #mountain west north 
               "MWC":[33,42], #moutain west central
               "MWS":[25,33], #moutain west south              
