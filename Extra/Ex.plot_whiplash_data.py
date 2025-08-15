@@ -2,6 +2,8 @@
 ## Plot the number of whiplash occurrences at each grid point throughout the timeframe
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15th, 2025 
+## Input: Regional whiplash occurence files.
+## Output:
 #########################################################################################
 #Import Required Modules
 #########################################################################################
