@@ -2,7 +2,7 @@
 ## Check the SPI Data to make sure it makes sense
 ## Bryony Louise Puxley
 ## Last Edited: Friday, August 15, 2025 
-## Input: Regional SPI files.
+## Input: regional SPI data
 ## Output: A PNG of the annual average SPI across the CONUS.
 #########################################################################################
 #Import Required Modules
