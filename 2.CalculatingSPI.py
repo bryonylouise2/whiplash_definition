@@ -40,7 +40,7 @@ print('read in data')
 # Regions For Analysis (Split into regions to save on memory or run on entire CONUS)
 #########################################################################################
 #Choose Region
-Region = "WC"
+Region = "WCN"
 
 region_lon = {"test":[277,277.2],
               "CONUS":[235,295], 
