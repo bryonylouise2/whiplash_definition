@@ -4,8 +4,8 @@
 ## Last Edited: Friday, July 25th, 2025 
 ## Input: Regional SPI files or CONUS-wide SPI file - need all times at each grid point.
 ## Output: netCDF file of identified whiplash occurrences at a ~ 6 km grid resolution 
-## from 1915 to 2020, and a PNG file of the average SPI across the chosen region for 
-## visualization.
+## from 1915 to 2020, and a PNG file of the number of whiplash occurrences across the 
+## chosen region for visualization.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
