@@ -12,17 +12,7 @@
 # Import Required Modules
 #########################################################################################
 import os
-import pandas as pd
-import scipy.stats as scs
 import xarray as xr
-from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
-from netCDF4 import Dataset, num2date, MFDataset
-
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 
 #########################################################################################
 # Convert regional files into decadal periods 
