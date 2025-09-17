@@ -14,24 +14,15 @@
 #########################################################################################
 # Import Required Modules
 #########################################################################################
-import xesmf as xe
 import numpy as np
-import xarray as xr
-import dask
-from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
-from netCDF4 import Dataset, num2date, MFDataset
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import spei as si
 import pandas as pd
 import scipy.stats as scs
 import statsmodels.api as sm
-import shapely.wkt
-import os
+from tqdm import tqdm
+
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 #########################################################################################
 # Import Functions
@@ -293,7 +284,7 @@ for cat in categories:
         pairwise_results_pvalue[(month1, month2)] = p_val
         
     # Apply multiple testing correction (FDR correction)
-    _, corrected_p_values, _, _ = smm.multipletests(list(pairwise_results_pvalue.values()), method="fdr_bh")
+    _, corrected_p_values, _, _ = sm.multipletests(list(pairwise_results_pvalue.values()), method="fdr_bh")
 	
 	# Store corrected p-values in a matrix format for the heatmap
     diff_matrix = pd.DataFrame(np.ones((len(months), len(months))), index=months, columns=months)
