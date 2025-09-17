@@ -12,10 +12,7 @@
 #########################################################################################
 import numpy as np
 import xarray as xr
-import pandas as pd
-from netCDF4 import Dataset, num2date, MFDataset
-import scipy.stats as scs
-import os
+from datetime import datetime
 
 #########################################################################################
 #Time Periods
