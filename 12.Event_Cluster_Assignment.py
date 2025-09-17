@@ -11,23 +11,25 @@
 #########################################################################################
 # Import Required Modules
 #########################################################################################
+import os
 import xesmf as xe
 import numpy as np
 import xarray as xr
+import pandas as pd
 from tqdm import tqdm
 import time
 from datetime import datetime, timedelta, date
 from netCDF4 import Dataset, num2date, MFDataset
+
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import matplotlib.cm as cm
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import pandas as pd
+
 import scipy.stats as scs
 from shapely.ops import unary_union
 import shapely.wkt
-import os
 
 from kneed import KneeLocator
 from sklearn.datasets import make_blobs
@@ -194,6 +196,17 @@ cluster_polygons_dp['avg_poly'] = largest_poly
 cluster_polygons_dp['avg_poly'] = cluster_polygons_dp['avg_poly'].apply(lambda geom: geom.wkt)
 
 cluster_polygons_dp.to_csv(f'/data2/bpuxley/Events/cluster_polygons_final.csv', index=False)
+
+#########################################################################################
+#Determine Size of Cluster Polygons
+#########################################################################################
+areas = []
+for i in range(0, cluster_no):
+	polygon = cluster_polys['avg_poly'][i]
+	a = functions.polygon_area_km2(polygon)
+	areas.append(round(a))
+	
+df_areas = pd.DataFrame({'cluster_no':cluster_polys.cluster_no, 'Area': areas})
 
 #########################################################################################
 #Read in Cluster Data
