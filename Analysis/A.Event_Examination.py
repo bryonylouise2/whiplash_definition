@@ -13,23 +13,19 @@
 #########################################################################################
 # Import Required Modules
 #########################################################################################
-import xesmf as xe
+import os
 import numpy as np
 import xarray as xr
-import dask
+import pandas as pd
 from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
-from netCDF4 import Dataset, num2date, MFDataset
+from datetime import timedelta
+
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import spei as si
-import pandas as pd
-import scipy.stats as scs
+
 import shapely.wkt
-import os
 
 #########################################################################################
 # Choose Precipitation Whiplash Type and run the corresponding cell
