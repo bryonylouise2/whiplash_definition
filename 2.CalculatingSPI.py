@@ -21,9 +21,6 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
-
-
-
 #########################################################################################
 # Import Data
 #########################################################################################
