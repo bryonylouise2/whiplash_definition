@@ -12,31 +12,19 @@
 #########################################################################################
 # Import Required Modules
 #########################################################################################
-import xesmf as xe
 import numpy as np
-import xarray as xr
-import dask
+import pandas as pd
 from tqdm import tqdm
-import time
-from datetime import datetime, timedelta, date
-from netCDF4 import Dataset, num2date, MFDataset
+
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 import matplotlib.cm as cm
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import spei as si
-import pandas as pd
-import scipy.stats as scs
-from shapely.ops import unary_union
-import shapely.wkt
-import os
 
-from kneed import KneeLocator
-from sklearn.datasets import make_blobs
-from sklearn.cluster import KMeans, AgglomerativeClustering
+import shapely.wkt
+
+from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score, silhouette_samples
-from sklearn.preprocessing import StandardScaler
 
 #########################################################################################
 # Import Functions
