@@ -12,10 +12,7 @@ import xesmf as xe
 import numpy as np
 import xarray as xr
 import pandas as pd
-from netCDF4 import Dataset, num2date, MFDataset
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
+from netCDF4 import Dataset
 
 ##########################################################################################
 #Bilinearly interpolate PRISM precipitation data from a native 4-km grid onto Livneh's grid 
