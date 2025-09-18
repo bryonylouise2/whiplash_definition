@@ -596,3 +596,25 @@ def plot_largest_polygon(ax, polygons, colors, **kwargs):
             ha='center', va='center', fontsize=10,
             fontweight='bold', color=color,
             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.1', alpha=1))		
+
+def polygon_area_km2(polygon, from_crs="EPSG:4326", to_crs="EPSG:6933"):
+    """
+    Compute area of a Shapely polygon in km^2 using projection + shoelace formula.
+    polygon: shapely.geometry.Polygon
+    from_crs: CRS of polygon coords (default EPSG:4326 = lon/lat)
+    to_crs: equal-area CRS for projection (default EPSG:6933 = global equal area)
+    """
+    # Transformer
+    transformer = pyproj.Transformer.from_crs(from_crs, to_crs, always_xy=True)
+    
+    # Get exterior coords
+    coords = np.array(polygon.exterior.coords)  # shape (N, 2)
+    lon, lat = coords[:, 0], coords[:, 1]
+    
+    # Project to meters
+    x, y = transformer.transform(lon, lat)
+    
+    # Shoelace formula
+    a = 0.5 * np.sum((y[:-1] * np.diff(x)) - (x[:-1] * np.diff(y)))
+    
+    return abs(a) / 1e6  # km²
