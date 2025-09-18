@@ -93,13 +93,9 @@ Ex.CaseStudyAnalysis_PD.py
 			Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
 
 Ex.Compare_PRISM_&_Livneh.py
-			This script to answer Reviewer Question #1: Can you evaluate whether there are notable differences in values between Livneh and PRISM using 
-   			overlapping time periods? I'd like a bit more background to confirm the assumption that there is no influence on the  whiplash calculations 
-	  		between these datasets.
+			This script to answer Reviewer Question #1: Can you evaluate whether there are notable differences in values between Livneh and PRISM using overlapping time periods? I'd like a bit more background to confirm the assumption that there is no influence on the  whiplash calculations between these datasets.
 			Input:  Daily precipitation data from Livneh and PRISM from 1981 to 2020.
-			Output: Two PNG files. 1) a timeseries of a) 30-day rolling precipitation totals in mm for PRISM (blue) and Livneh (red) between 1981 and 2010, 
-   			and b) the difference (PRISM - Livneh) in 30-day rolling precipitation totals in mm. and 2) a spatial plot of the average annual precipitation 
-	  		total in inches (1981-2020) for a) PRISM and b) Livneh.
+			Output: Two PNG files. 1) a timeseries of a) 30-day rolling precipitation totals in mm for PRISM (blue) and Livneh (red) between 1981 and 2010, and b) the difference (PRISM - Livneh) in 30-day rolling precipitation totals in mm. and 2) a spatial plot of the average annual precipitation total in inches (1981-2020) for a) PRISM and b) Livneh.
 
 Ex.Event_Characteristics.py
 			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
@@ -112,11 +108,19 @@ Ex.Number_of_Days_Between_NonIndependent_Events.py
    			Output: A histogram of a) the number of days between drought-to-pluvial and b) pluvial-to-drought events.
 
 Ex.check_precip_data.py
+			This script checks the precipitation data to make sure it makes sense.
+			Input: Precipitation Data
+			Output: A PNG of the annual average precipitation across the chosen region. 
 
 Ex.check_spi_data.py
+			This script checks the SPI Data to make sure it makes sense
+			Input: regional SPI data
+			Output: A PNG of the annual average SPI across the CONUS.
 
 Ex.plot_whiplash_data.py
-
+			This script plots the number of whiplash occurrences at each grid point throughout the timeframe
+			Input: regional whiplash data
+			Output: A PNG of the number of whiplash occurrences throughout the period across the CONUS.
  
 # Analysis Files
 A.Event_Climatology.py
@@ -129,8 +133,37 @@ A.Event_Examination.py
 			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. Previously made SPI, whiplash occurrence, and normalized density files, 
 			Output: Two PNG files. Figure 1 from the journal article: 30-day SPI during (a) the drought period, and (b) the following pluvial period. (c) Points flagged as having a whiplash event as per our definition (see the text for details). (d) Full KDE normalized density field using the Epanechnikov kernel and 0.02 bandwidth. In red on all subplots, the event polygon is drawn using the 0.4878 contour. Figure S1 from the journal article: the same for pluvial-to-drought.
 
+A.Event_Frequency.py
+			This script calculates the frequency of events throughout the timeframe, as well as seasonally throughout the year.
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. ENSO (Oceanic Niño Index-ONI) data. 
+			Output: PNG files. 1) Plot of the yearly ENSO - ONI Index from 1915 to 2020. 2) The yearly frequency of the events; the average areal size; and the total area impacted from 1915 to 2020 (individually). 3) the monthly frequency of the events, and the monthly average areal size. 4) The trends on each half of the database. 5) The yearly frequency of the events; the average areal size; and the total area impacted from 1915 to 2020 (one plot).
+
 A.Event_Intensity.py
 			This script examines the intensity of whiplash events.
 			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
 			Output: A scatter plot (PNG) of average SPI change vs maximum grid point SPI change.
 
+A.Event_Length_Analysis.py
+			This script examines and plots how long an event was in drought/pluvial conditions prior to and after the event
+			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought only, and Pluvial only events.
+			Output: A scatter plot (PNG) of (a,c) Time in drought (SPI below zero) prior to vs time in pluvial (SPI above zero) after our recorded drought-to-pluvial whiplash events, and (b,d) time in pluvial (SPI above zero) prior to vs time in drought (SPI below zero) after our recorded pluvial-to-drought whiplash events (Figure 11) and the expanded full version (Supplementary Figure 7). Additionally, the values for the average number of days in drought (SPI below zero) and pluvial (SPI above zero) conditions for each of our defined clusters, as shown in Table 2.
+
+A.Event_Length_Calculation.py
+			This script to calculate how long an event was in drought/pluvial conditions prior to and after the event
+			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought only, and Pluvial only events. Decadal SPI fiLes. 
+			Output: Updated independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought only, and Pluvial only events with columns for Time in *CONDITION* Before, and Time in *CONDITION* After for respective events.
+
+A.Event_Propagation.py
+			This script calculates how far the center point of the polygon is moving during each event (Event Propagation) and how the distance between the center point of the polygon and the boundary is changing during each event (Event Growth)
+			Input: Independent event files of Drought-to-Pluvial, Pluvial-to-Drought, Drought only, and Pluvial only events.
+			Output: A PNG of a scatter plot of centroid propagation vs event growth (Figure 12)
+
+A.Regional_Analysis_Seasonality.py
+			This script calculates the seasonality of drought-to-pluvial and pluvial-to-drought events throughout the timeframe for individual clusters.
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. El Nino Southern Oscillation Southern Oscillation Index (SOI). Daily Precipitation Data from 1915-2020.
+			Output: Six PNG files. 1) A PNG of the yearly ENSO index from 1915 to 2020. 2) A PNG of the temporal trends of drought-to-pluvial and pluvial-to-drought precipitation whiplash events across CONUS (Figure 7 in the manuscript). 3) Two PNGs of the temporal trends in the  50th percentile (Figure 8) and 90th percentiles (Supplementary Figure 5) of drought-to-pluvial and pluvial-to-drought precipitation whiplash events for each of the 7 clusters. 4) A PNG of the seasonal cycle of the frequency of drought-to-pluvial and pluvial-to-drought precipitation whiplash events (Figure 9) and finally 5) A PNG of the seasonal cycle of average areal size of event polygons for drought-to-pluvial and pluvial-to-drought precipitation whiplash (Figure 10).
+
+A.Regional_Analysis_Seasonality_Droughts_Pluvials_Only.py
+			This script calculatea the seasonality of drought and pluvial only events throughout the timeframe for individual clusters
+			Input: Independent event files of Drought only and Pluvial only events. 
+			Output: PNG Files of 1) the temporal trends of drought and pluvial precipitation whiplash events across CONUS, 2) Two PNGs of the temporal trends in the  50th percentile (Supplementary Figure 6) and 90th percentiles of drought and pluvial only events for each of the 7 clusters, and 3) the seasonal cycle of the frequency of drought and pluvial only events.
