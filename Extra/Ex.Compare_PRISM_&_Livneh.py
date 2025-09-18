@@ -5,6 +5,11 @@
 ## whiplash calculations between these datasets.
 ## Bryony Louise Puxley
 ## Last Edited: Thursday, September 11th, 2025
+## Input:  Daily precipitation data from Livneh and PRISM from 1981 to 2020.
+## Output: Two PNG files. 1) a timeseries of a) 30-day rolling precipitation totals in mm 
+## for PRISM (blue) and Livneh (red) between 1981 and 2010, and b) the difference 
+## (PRISM - Livneh) in 30-day rolling precipitation totals in mm. and 2) a spatial plot
+## of the average annual precipitation total in inches (1981-2020) for a) PRISM and b) Livneh.
 #########################################################################################
 # Import Required Modules
 #########################################################################################
