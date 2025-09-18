@@ -93,6 +93,13 @@ Ex.CaseStudyAnalysis_PD.py
 			Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
 
 Ex.Compare_PRISM_&_Livneh.py
+			This script to answer Reviewer Question #1: Can you evaluate whether there are notable differences in values between Livneh and PRISM using 
+   			overlapping time periods? I'd like a bit more background to confirm the assumption that there is no influence on the  whiplash calculations 
+	  		between these datasets.
+			Input:  Daily precipitation data from Livneh and PRISM from 1981 to 2020.
+			Output: Two PNG files. 1) a timeseries of a) 30-day rolling precipitation totals in mm for PRISM (blue) and Livneh (red) between 1981 and 2010, 
+   			and b) the difference (PRISM - Livneh) in 30-day rolling precipitation totals in mm. and 2) a spatial plot of the average annual precipitation 
+	  		total in inches (1981-2020) for a) PRISM and b) Livneh.
 
 Ex.Event_Characteristics.py
 			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
