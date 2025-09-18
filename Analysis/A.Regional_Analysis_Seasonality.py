@@ -1,6 +1,6 @@
 #########################################################################################
-## A script to calculate the seasonality of events throughout the timeframe for individual
-## clusters
+## A script to calculate the seasonality of drought-to-pluvial and pluvial-to-drought 
+## events throughout the timeframe for individual clusters.
 ## Bryony Louise Puxley
 ## Last Edited: Wednesday, May 28th
 ## Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events. El
@@ -8,7 +8,7 @@
 ## 1915-2020.
 ## Output: Six PNG files. 1) A PNG of the yearly ENSO index from 1915 to 2020. 2) A PNG of
 ## the temporal trends of drought-to-pluvial and pluvial-to-drought precipitation whiplash 
-## events across CONUS (Figure 7 in the manuscript). 3) Two PNGs of the Temporal trends in 
+## events across CONUS (Figure 7 in the manuscript). 3) Two PNGs of the temporal trends in 
 ## the  50th percentile (Figure 8) and 90th percentiles (Supplementary Figure 5) of 
 ## drought-to-pluvial and pluvial-to-drought precipitation whiplash events for each of the 
 ## 7 clusters. 4) A PNG of the seasonal cycle of the frequency of drought-to-pluvial and 
