@@ -88,20 +88,27 @@ Ex.CaseStudyAnalysis_DP.py
 			Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
 
 Ex.CaseStudyAnalysis_PD.py 
-				This script examines and creates GIFs of specific pluvial-to-drought events
-				Input: Decadal SPI, whiplash occurrences, normalized density, and independent pluvial-to-drought events CSV. Choose event number or date.
-				Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
+			This script examines and creates GIFs of specific pluvial-to-drought events
+			Input: Decadal SPI, whiplash occurrences, normalized density, and independent pluvial-to-drought events CSV. Choose event number or date.
+			Output: GIFs of SPI during the drought period, SPI during the pluvial period, SPI change, and whiplash occurrences.
 
+Ex.Compare_PRISM_&_Livneh.py
+
+Ex.Event_Characteristics.py
+			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
+			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
+			Output: A PNG file of on what "day" does the largest area, the largest area-averaged, and the max SPI change.  
 
 Ex.Number_of_Days_Between_NonIndependent_Events.py
 			This script calculates and plots the days between non-independent dates within the database.
 			Input: Subsetted by area event file from 9. Database_Creation.py
    			Output: A histogram of a) the number of days between drought-to-pluvial and b) pluvial-to-drought events.
 
-Ex.Event_Characteristics.py
-			This script calculates and plots on what "day" the largest area, the largest area-averaged, and the largest max SPI change occur. 
-			Input: Independent event files of Drought-to-Pluvial and Pluvial-to-Drought events.
-			Output: A PNG file of on what "day" does the largest area, the largest area-averaged, and the max SPI change.  
+Ex.check_precip_data.py
+
+Ex.check_spi_data.py
+
+Ex.plot_whiplash_data.py
 
  
 # Analysis Files
