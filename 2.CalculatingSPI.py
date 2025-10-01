@@ -14,6 +14,7 @@ import os
 import numpy as np
 import pandas as pd
 import scipy.stats as scs
+import spei as si
 import xarray as xr
 from tqdm import tqdm
 
