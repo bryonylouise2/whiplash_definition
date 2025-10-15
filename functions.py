@@ -340,37 +340,34 @@ def pearsons_corr(x, y, min_lag, max_lag, alternative_hypothesis):
 
 	return da_reg
 	
-def subset_events(df, overlap_days):
-	subset_index = []
-	subset_index.append(0)
-	first_column_name = df.columns[0]
-	first_column = df.iloc[:, 0]
-	for i in range(0, len(first_column)-1):
-		target_row = df.iloc[i]
-		overlap_date = (pd.to_datetime(target_row[first_column_name]).date() + timedelta(days=overlap_days)).strftime('%Y-%m-%d')
-		if first_column[i+1] <= overlap_date:
-			subset_index.append(i)
-		else:
-			break
-	
-	subset_index = list(set(subset_index))
-	subset = df.iloc[subset_index]
-	polys = [shapely.wkt.loads(i) for i in subset.geometry]
-	
-	num_regions = len(subset)
+def subset_events_fixed(df, overlap_days):
+    df = df.sort_values(df.columns[0]).reset_index(drop=True)
+    subset_index = [0]  # always include the first row
+    last_included_date = pd.to_datetime(df.iloc[0, 0]).date()
 
-	lat = np.arange(25.15625, 50.03125, 0.0625)
-	lon = np.arange(235.40625, 293.03125, 0.0625) #Livneh Grid
-	grid_lons, grid_lats = np.meshgrid(lon,lat)
-	
-	regions_masked = np.zeros((num_regions, lat.size, lon.size))
-	
-	for i,p in enumerate(polys):
-		regions_masked[i,:,:] = _mask_outside_region(lon=grid_lons, lat=grid_lats, polygon=p)
-		
-	n,y,x = regions_masked.shape
-	regions_masked = regions_masked.reshape(n,y*x)
-	return regions_masked.astype(int)
+    for i in range(1, len(df)):
+        current_date = pd.to_datetime(df.iloc[i, 0]).date()
+        if (current_date - last_included_date).days <= overlap_days:
+            subset_index.append(i)
+        else:
+            break  # stop as soon as the gap exceeds overlap_days
+
+    subset = df.iloc[subset_index].copy()
+    polys = [shapely.wkt.loads(i) for i in subset.geometry]
+
+    num_regions = len(subset)
+    lat = np.arange(25.15625, 50.03125, 0.0625)
+    lon = np.arange(235.40625, 293.03125, 0.0625)  # Livneh Grid
+    grid_lons, grid_lats = np.meshgrid(lon, lat)
+
+    regions_masked = np.zeros((num_regions, lat.size, lon.size))
+
+    for i, p in enumerate(polys):
+        regions_masked[i, :, :] = _mask_outside_region(lon=grid_lons, lat=grid_lats, polygon=p)
+
+    n, y, x = regions_masked.shape
+    regions_masked = regions_masked.reshape(n, y * x)
+    return regions_masked.astype(int)
 
 def group_events(arr, thresh):
     coefs = np.zeros((arr.shape[0]))
