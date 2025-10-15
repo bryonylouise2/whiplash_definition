@@ -340,7 +340,7 @@ def pearsons_corr(x, y, min_lag, max_lag, alternative_hypothesis):
 
 	return da_reg
 	
-def subset_events_fixed(df, overlap_days):
+def subset_events(df, overlap_days):
     df = df.sort_values(df.columns[0]).reset_index(drop=True)
     subset_index = [0]  # always include the first row
     last_included_date = pd.to_datetime(df.iloc[0, 0]).date()
